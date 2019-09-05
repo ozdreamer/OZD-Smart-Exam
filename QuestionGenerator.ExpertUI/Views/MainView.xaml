@@ -1,0 +1,365 @@
+﻿<dx:DXWindow
+    x:Class="QuestionGenerator.ExpertUI.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:vm="clr-namespace:QuestionGenerator.Library.ViewModels;assembly=QuestionGenerator.Library"
+    xmlns:library="clr-namespace:QuestionGenerator.Library;assembly=QuestionGenerator.Library"
+    xmlns:libconverters="clr-namespace:QuestionGenerator.Library.Resources.Converters;assembly=QuestionGenerator.Library"
+    xmlns:localconverters="clr-namespace:QuestionGenerator.ExpertUI.Resources.Converters"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    mc:Ignorable="d"
+    dx:ThemeManager.ThemeName="{Binding SelectedSkin}"
+    WindowState="Maximized"
+    WindowStyle="SingleBorderWindow"
+    Focusable="False"
+    Title="ICAS Test Suite"
+    Loaded="OnLoaded"
+    KeyUp="OnKeyUp"
+    Closed="OnClosed">
+
+    <dx:DXWindow.DataContext>
+        <vm:MainViewModel/>
+    </dx:DXWindow.DataContext>
+
+    <dx:DXWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Styles/Styles.xaml"/>
+                <ResourceDictionary Source="../Resources/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+            <libconverters:ReverseBooleanToVisibilityConverter x:Key="ReverseVisibilityConverter"/>
+            <libconverters:OperatingModeToVisibilityConverter x:Key="OperatingModeToVisibilityConverter"/>
+            <libconverters:InputSelectionTypeToBooleanConverter x:Key="InputSelectionTypeToBooleanConverter"/>
+            <localconverters:SvgImageSourceConverter x:Key="SvgImageSourceConverter"/>
+        </ResourceDictionary>
+    </dx:DXWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="5.5*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <dxb:BarContainerControl HorizontalAlignment="Right" Grid.ColumnSpan="3">
+            <dxb:ToolBarControl ShowDragWidget="False" AllowQuickCustomization="False">
+                <dxb:BarEditItem Content="Look and Feel" EditValue="{Binding SelectedSkin}" EditWidth="100">
+                    <dxb:BarEditItem.EditSettings>
+                        <dxe:ComboBoxEditSettings ItemsSource="{Binding SkinCollection}" DisplayMember="Value" ValueMember="Key" IsTextEditable="False"/>
+                    </dxb:BarEditItem.EditSettings>
+                </dxb:BarEditItem>
+            </dxb:ToolBarControl>
+        </dxb:BarContainerControl>
+
+        <!--Options-->
+        <GroupBox Header="Options" Style="{StaticResource MainGroupBoxStyle}" IsEnabled="{DXBinding 'IsTestInProgress? false : true'}" Width="Auto" Grid.Row="1">
+            <Grid Style="{StaticResource GridInGroupStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Grade" Style="{StaticResource LabelInGridStyle}"/>
+                    <dxe:ComboBoxEdit ItemsSource="{Binding Grades}" SelectedItem="{Binding SelectedGrade}" Style="{StaticResource TextInGridStyle}" IsTextEditable="False" Grid.Column="1"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Subject" Style="{StaticResource LabelInGridStyle}"/>
+                    <dxe:ComboBoxEdit ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}" Style="{StaticResource TextInGridStyle}" DisplayMember="Title" IsTextEditable="False" Grid.Column="1"/>
+                </Grid>
+                <GroupBox Grid.Row="2">
+                    <GroupBox.Header>
+                        <RadioButton Content="Resume Incomplete Test" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.IncompleteTest}}"/>
+                    </GroupBox.Header>
+                    <Grid Style="{StaticResource GridInGroupStyle}" IsEnabled="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.IncompleteTest}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Test" Style="{StaticResource LabelInGridStyle}" Grid.Column="0"/>
+                        <dxe:ComboBoxEdit ItemsSource="{Binding IncompleteTests}" SelectedItem="{Binding SelectedIncompleteTest}" Style="{StaticResource TextInGridStyle}" DisplayMember="Name" IsTextEditable="False" Grid.Column="1">
+                            <dxe:ComboBoxEdit.Buttons>
+                                <dxe:ButtonInfo GlyphKind="Minus" Command="{Binding DeleteTestCommand}" CommandParameter="{Binding EditValue, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:ButtonEdit}}" ToolTip="Delete Test"/>
+                            </dxe:ComboBoxEdit.Buttons>
+                        </dxe:ComboBoxEdit>
+                        <dx:SimpleButton Content="Resume" Command="{Binding ResumeExamCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2" />
+                    </Grid>
+                </GroupBox>
+                
+                <GroupBox Grid.Row="3">
+                    <GroupBox.Header>
+                        <RadioButton Content="Past Exams" Grid.Row="3" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.PastExam}}"/>
+                    </GroupBox.Header>
+                    <Grid Style="{StaticResource GridInGroupStyle}" IsEnabled="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.PastExam}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Year" Style="{StaticResource LabelInGridStyle}" Grid.Column="0"/>
+                        <dxe:ComboBoxEdit ItemsSource="{Binding AvailableExams}" SelectedItem="{Binding SelectedExam}" Style="{StaticResource TextInGridStyle}" DisplayMember="Year" IsTextEditable="False" Grid.Column="1"/>
+                        <dx:SimpleButton Content="Start" Command="{Binding StartTestCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2"/>
+                    </Grid>
+                </GroupBox>
+                
+                <GroupBox Grid.Row="4">
+                    <GroupBox.Header>
+                        <RadioButton Content="Generate Random Test" Grid.Row="4" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.RandomTest}}"/>
+                    </GroupBox.Header>
+                    <Grid Style="{StaticResource GridInGroupStyle}" IsEnabled="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.RandomTest}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Number of Questions" Style="{StaticResource LabelInGridStyle}" Grid.Column="0"/>
+                        <dxe:SpinEdit EditValue="{Binding TotalQuestions, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextInGridStyle}" EditValueType="{x:Type sys:Int32}" AllowNullInput="True" MinValue="10" MaxValue="40" Grid.Column="1"/>
+                        <dx:SimpleButton Content="Generate" Command="{Binding GenerateTestCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2"/>
+                    </Grid>
+                </GroupBox>
+                
+                <GroupBox Grid.Row="5">
+                    <GroupBox.Header>
+                        <RadioButton Content="Review Completed Test" Grid.Row="5" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.ReviewTest}}"/>
+                    </GroupBox.Header>
+                    <Grid Style="{StaticResource GridInGroupStyle}" IsEnabled="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.ReviewTest}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Test" Style="{StaticResource LabelInGridStyle}" Grid.Column="0"/>
+                        <dxe:ComboBoxEdit ItemsSource="{Binding CompletedTests}" SelectedItem="{Binding SelectedCompletedTest}" DisplayMember="Name" Style="{StaticResource TextInGridStyle}" IsTextEditable="False" Grid.Column="1">
+                            <dxe:ComboBoxEdit.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Style="{StaticResource IndicatorEllipseStyle}" Fill="{DXBinding 'ExamId == null ? $Colors.Orange : ExamId == 0 ? $Colors.Blue : $Colors.Green'}" />
+                                        <TextBlock Text="{DXBinding 'ExamId != null ? Score : $string.Empty'}" Foreground="{DXBinding 'ExamId == null ? $Colors.Gray : $Colors.Black'}" Grid.Column="1" Width="20"/>
+                                        <TextBlock Text="{Binding Name}" Foreground="{DXBinding 'ExamId == null ? $Colors.Gray : $Colors.Black'}" Grid.Column="2" />
+                                    </Grid>
+                                </DataTemplate>
+                            </dxe:ComboBoxEdit.ItemTemplate>
+                            <dxe:ComboBoxEdit.Buttons>
+                                <dxe:ButtonInfo GlyphKind="Minus" Command="{Binding DeleteTestCommand}" CommandParameter="{Binding EditValue, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:ButtonEdit}}" ToolTip="Delete Test"/>
+                            </dxe:ComboBoxEdit.Buttons>
+                        </dxe:ComboBoxEdit>
+                        <dx:SimpleButton Content="Review" Command="{Binding ReviewTestCommand}" CommandParameter="{Binding SelectedCompletedTest}" Style="{StaticResource ButtonInGridStyle}" Grid.Column="2"/>
+                        <Label Content="Time" Style="{StaticResource LabelInGridStyle}" Grid.Column="0" Grid.Row="1"/>
+                        <dxe:SpinEdit EditValue="{Binding ReviewTestTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextInGridStyle}" EditValueType="{x:Type sys:Int32}" AllowNullInput="True" MinValue="10" MaxValue="60" Grid.Column="1" Grid.Row="1"/>
+                        <dx:SimpleButton Content="Re-take" Command="{Binding RetakeTestCommand}" Style="{StaticResource ButtonInGridStyle}" Grid.Column="2" Grid.Row="1"/>
+                    </Grid>
+                </GroupBox>
+
+                <TextBlock Text="{Binding RemainingTimeText}" Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Arial Black" Foreground="Navy" FontWeight="Bold" Margin="10" Grid.Row="6"/>
+                <TextBlock Text="{Binding ExamProgressText}" Style="{StaticResource TestVisibleOnlyStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="32" FontFamily="Arial Black" Foreground="DarkRed" FontWeight="Bold" Margin="10" Grid.Row="7"/>
+
+            </Grid>
+        </GroupBox>
+        
+        <!--Question Image-->
+        <GroupBox Style="{StaticResource MainGroupBoxStyle}" Visibility="{Binding IsResultVisible, Converter={StaticResource ReverseVisibilityConverter}}" Grid.Column="1" Grid.Row="1">
+            <GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Ellipse DataContext="{Binding DataContext.SelectedQuestion.Level, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource DifficultyLevelIndicatorStyle}" />
+                    <TextBlock Text="Question" Grid.Column="1" />
+                </Grid>
+            </GroupBox.Header>
+            <Grid Style="{StaticResource GridInGroupStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Source="{Binding QuestionImage}" Stretch="Uniform" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <dx:SimpleButton ToolTip="Previous Question" Command="{Binding PrevQuestionCommand}" Style="{StaticResource NavigateButtonStyle}">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource PrevSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton ToolTip="Pause Timer" Command="{Binding PauseTimerCommand}" Style="{StaticResource NavigateButtonStyle}" Grid.Column="1">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource PauseSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton ToolTip="Stop Test" Command="{Binding FinishTestCommand}" Style="{StaticResource NavigateButtonStyle}" Grid.Column="2">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource StopSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton ToolTip="Resume Timer" Command="{Binding PlayTimerCommand}" Style="{StaticResource NavigateButtonStyle}" Grid.Column="3">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource PlaySvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton ToolTip="Next Question" Command="{Binding NextQuestionCommand}" Focusable="False" Style="{StaticResource NavigateButtonStyle}" Grid.Column="4">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource NextSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <!--Result Panel-->
+        <GroupBox Header="Result" Style="{StaticResource MainGroupBoxStyle}" Visibility="{Binding IsResultVisible, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Grid.Row="1">
+            <Grid Style="{StaticResource GridInGroupStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding ResultElapsedTimeText}" Style="{StaticResource ResultTextStyle}" Foreground="SlateGray"/>
+                <dxc:ChartControl Grid.Row="1" Grid.RowSpan="{DXBinding 'HasHistoricalData ? 1 : 2'}">
+                    <dxc:SimpleDiagram2D>
+                        <dxc:PieSeries2D DataSource="{Binding DonutChartData}" ArgumentDataMember="Title" ValueDataMember="Value" ColorDataMember="Foreground"
+                                 LabelsVisibility="True" LegendTextPattern="{}{A}: {V}" HoleRadiusPercent="50">
+                            <dxc:PieSeries2D.Model>
+                                <dxc:GlarePie2DModel/>
+                            </dxc:PieSeries2D.Model>
+                            <dxc:PieSeries2D.TotalLabel>
+                                <dxc:PieTotalLabel>
+                                    <dxc:PieTotalLabel.ContentTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DataContext.CurrentTest.Score, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource PieHoleTextStyle}"/>
+                                        </DataTemplate>
+                                    </dxc:PieTotalLabel.ContentTemplate>
+                                </dxc:PieTotalLabel>
+                            </dxc:PieSeries2D.TotalLabel>
+                            <dxc:PieSeries2D.Label>
+                                <dxc:SeriesLabel TextPattern="{}{VP:P}" dxc:PieSeries.LabelPosition="TwoColumns"/>
+                            </dxc:PieSeries2D.Label>
+                            <dxc:PieSeries2D.Colorizer>
+                                <dxc:ColorObjectColorizer/>
+                            </dxc:PieSeries2D.Colorizer>
+                        </dxc:PieSeries2D>
+                    </dxc:SimpleDiagram2D>
+                    <dxc:ChartControl.Legends>
+                        <dxc:Legend />
+                    </dxc:ChartControl.Legends>
+                </dxc:ChartControl>
+                <dxc:ChartControl Grid.Row="2" Visibility="{DXBinding 'HasHistoricalData ? $Visibility.Visible : $Visibility.Hidden'}">
+                    <dxc:ChartControl.Diagram>
+                        <dxc:XYDiagram2D SeriesItemsSource="{Binding StackedChartData}" Rotated="True">
+                            <dxc:XYDiagram2D.SeriesItemTemplate>
+                                <DataTemplate>
+                                    <dxc:BarFullStackedSeries2D DataSource="{Binding Data}" ArgumentDataMember="Title" ValueDataMember="Value" ColorDataMember="Foreground" />
+                                </DataTemplate>
+                            </dxc:XYDiagram2D.SeriesItemTemplate>
+                        </dxc:XYDiagram2D>
+                    </dxc:ChartControl.Diagram>
+                    <dxc:ChartControl.Legend>
+                        <dxc:Legend />
+                    </dxc:ChartControl.Legend>
+                </dxc:ChartControl>
+            </Grid>
+        </GroupBox>
+
+        <!--Answer Panel-->
+        <GroupBox Header="Answer" Style="{StaticResource MainGroupBoxStyle}" Grid.Column="2" Grid.Row="1">
+            <Grid>
+                <StackPanel Orientation="Vertical" 
+                            Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}">
+                    <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="A">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource LetterASvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="B">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource LetterBSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="C">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource LetterCSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                    <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="D">
+                        <dx:SimpleButton.ContentTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="{StaticResource LetterDSvg}"/>
+                            </DataTemplate>
+                        </dx:SimpleButton.ContentTemplate>
+                    </dx:SimpleButton>
+                </StackPanel>
+                
+                <dxg:GridControl ItemsSource="{Binding ReviewResults}" SelectedItem="{Binding SelectedReviewResult}" SelectionMode="Row" Margin="5"
+                                 Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Review}}">
+                    <dxg:GridColumn FieldName="Index" Header="" Width="35"/>
+                    <dxg:GridColumn FieldName="Answer" Header="Answer" Width="*"/>
+                    <dxg:GridColumn FieldName="CorrectAnswer" Header="Correct" Width="*" />
+                    <dxg:GridColumn FieldName="Level" Header="Level" Width="*" />
+                    <dxg:GridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count" Alignment="Right"/>
+                    </dxg:GridControl.TotalSummary>
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowEditing="False" RowStyle="{StaticResource ReviewGridRowStyle}" AllowSorting="False" AllowMoveColumnToDropArea="False"
+                                       FadeSelectionOnLostFocus="False" NavigationStyle="Row" ShowGroupPanel="False" ShowIndicator="False" ShowFixedTotalSummary="True"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</dx:DXWindow>
