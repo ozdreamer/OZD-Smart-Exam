@@ -76,7 +76,72 @@
             }
         }
 
-        #region Subject
+        #region Primary Data
+
+        /// <summary>
+        /// Stores the value for the <see cref="ExamTypes" /> property.
+        /// </summary>
+        private IEnumerable<ExamType> examTypes;
+
+        /// <summary>
+        /// Gets or sets the ExamTypes.
+        /// </summary>
+        /// <value>The ExamTypes.</value>
+        public IEnumerable<ExamType> ExamTypes
+        {
+            get
+            {
+                return this.examTypes;
+            }
+
+            set
+            {
+                if (this.examTypes != value)
+                {
+                    this.examTypes = value;
+                    this.NotifyOfPropertyChange(() => this.ExamTypes);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The selected exam type.
+        /// </summary>
+        private ExamType selectedExamType;
+
+        /// <summary>
+        /// Gets or sets the SelectedExamType.
+        /// </summary>
+        /// <value>The SelectedExamType.</value>
+        public ExamType SelectedExamType
+        {
+            get
+            {
+                if (this.selectedExamType == null)
+                {
+                    var examTypeId = int.TryParse(SettingsManager.GetValueFromAppSettings("SelectedExamType"), out int id) && id > 0 ? id : this.ExamTypes?.FirstOrDefault()?.Id ?? 0;
+                    this.selectedExamType = this.ExamTypes?.FirstOrDefault(x => x.Id == examTypeId);
+                }
+
+                return this.selectedExamType;
+            }
+
+            set
+            {
+                if (this.selectedExamType != value)
+                {
+                    if (value != null)
+                    {
+                        SettingsManager.SetValueToAppSettings("SelectedExamType", value.Id.ToString());
+                    }
+
+                    this.selectedExamType = value;
+                    this.NotifyOfPropertyChange(() => this.SelectedExamType);
+
+                    this.LoadExamsAndTests();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the subjects.
@@ -111,6 +176,11 @@
         }
 
         /// <summary>
+        /// The selected subject
+        /// </summary>
+        private Subject selectedSubject;
+
+        /// <summary>
         /// Gets or sets the SelectedSubject.
         /// </summary>
         /// <value>The SelectedSubject.</value>
@@ -118,24 +188,32 @@
         {
             get
             {
-                var subjectId = int.TryParse(SettingsManager.GetValueFromAppSettings("SelectedSubject"), out int id) && id > 0 ? id : this.Subjects?.FirstOrDefault()?.Id ?? 0;
-                return this.Subjects?.FirstOrDefault(x => x.Id == subjectId);
+                if (this.selectedSubject != null)
+                {
+                    var subjectId = int.TryParse(SettingsManager.GetValueFromAppSettings("SelectedSubject"), out int id) && id > 0 ? id : this.Subjects?.FirstOrDefault()?.Id ?? 0;
+                    this.selectedSubject = this.Subjects?.FirstOrDefault(x => x.Id == subjectId);
+                }
+
+                return this.selectedSubject;
             }
 
             set
             {
-                if (value != null)
+                if (this.selectedSubject != value)
                 {
-                    SettingsManager.SetValueToAppSettings("SelectedSubject", value.Id.ToString());
-                    this.LoadAvailableData();
+                    if (value != null)
+                    {
+                        SettingsManager.SetValueToAppSettings("SelectedSubject", value.Id.ToString());
+                    }
+
+                    this.selectedSubject = value;
                     this.NotifyOfPropertyChange(() => this.SelectedSubject);
+
+                    this.LoadExamsAndTests();
                 }
             }
         }
 
-        #endregion
-
-        #region Grade
 
         /// <summary>
         /// Stores the value for the <see cref="Grades" /> property.
@@ -164,6 +242,11 @@
         }
 
         /// <summary>
+        /// The selected grade
+        /// </summary>
+        private int? selectedGrade;
+
+        /// <summary>
         /// Gets or sets the SelectedGrade.
         /// </summary>
         /// <value>The SelectedGrade.</value>
@@ -171,16 +254,27 @@
         {
             get
             {
-                return int.TryParse(SettingsManager.GetValueFromAppSettings("SelectedGrade"), out int grade) ? grade : 3;
+                if (!this.selectedGrade.HasValue)
+                {
+                    this.selectedGrade = int.TryParse(SettingsManager.GetValueFromAppSettings("SelectedGrade"), out int grade) ? grade : 3;
+                }
+
+                return this.selectedGrade.Value;
             }
 
             set
             {
-                if (value > 0)
+                if (this.selectedGrade.Value != value)
                 {
-                    SettingsManager.SetValueToAppSettings("SelectedGrade", value.ToString());
-                    this.LoadAvailableData();
+                    if (value > 0)
+                    {
+                        SettingsManager.SetValueToAppSettings("SelectedGrade", value.ToString());
+                    }
+
+                    this.selectedGrade = value;
                     this.NotifyOfPropertyChange(() => this.SelectedGrade);
+
+                    this.LoadExamsAndTests();
                 }
             }
         }
@@ -1032,8 +1126,6 @@
 
             this.imageDirectory = Path.GetFullPath(ConfigurationManager.AppSettings["ImageDirectory"].ToString());
             this.InputSelectionType = InputSelectionType.IncompleteTest;
-
-            this.MessageService?.ShowDialog("a", "B");
         }
 
         /// <summary>
@@ -1047,23 +1139,27 @@
             var gradeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedGrade");
             this.SelectedGrade = int.TryParse(gradeFromSettings, out int grade) ? grade : this.Grades.FirstOrDefault();
 
-            this.Subjects = this.dataManager.GetAllSubjects(this.SelectedGrade);
-            var subjectFromSettings = SettingsManager.GetValueFromAppSettings("SelectedSubject");
-            this.SelectedSubject = int.TryParse(subjectFromSettings, out int subject) ? this.Subjects.FirstOrDefault(x => x.Id == subject) : this.Subjects.FirstOrDefault();
+            if (this.SelectedGrade > 0)
+            {
+                this.ExamTypes = this.dataManager.GetAllExamTypes(this.SelectedGrade);
+                var examTypeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedExamType");
+                this.SelectedExamType = int.TryParse(examTypeFromSettings, out int examTypeId) ? this.ExamTypes.FirstOrDefault(x => x.Id == examTypeId) : this.ExamTypes.FirstOrDefault();
+
+                this.Subjects = this.dataManager.GetAllSubjects(this.SelectedGrade);
+                var subjectFromSettings = SettingsManager.GetValueFromAppSettings("SelectedSubject");
+                this.SelectedSubject = int.TryParse(subjectFromSettings, out int subject) ? this.Subjects.FirstOrDefault(x => x.Id == subject) : this.Subjects.FirstOrDefault();
+            }
         }
 
         /// <summary>
         /// Loads the available exams.
         /// </summary>
-        private void LoadAvailableData()
+        private void LoadExamsAndTests()
         {
-            if (this.SelectedSubject != null && this.SelectedGrade > 0)
-            {
-                this.AvailableExams = this.dataManager.GetAvailableExams(this.SelectedSubject.Id, this.SelectedGrade);
-                this.SelectedExam = this.AvailableExams.FirstOrDefault();
+            this.AvailableExams = this.SelectedGrade > 0 && this.SelectedExamType != null && this.SelectedSubject != null ? this.dataManager.GetAvailableExams(this.SelectedExamType.Id, this.SelectedSubject.Id, this.SelectedGrade) : new List<Exam>();
+            this.SelectedExam = this.AvailableExams.FirstOrDefault();
 
-                this.LoadTests();
-            }
+            this.LoadTests();
         }
 
         /// <summary>
@@ -1071,10 +1167,16 @@
         /// </summary>
         private void LoadTests()
         {
-            this.IncompleteTests = this.dataManager.GetIncompleteTests(this.SelectedSubject.Id, this.SelectedGrade);
-            this.SelectedIncompleteTest = this.IncompleteTests.FirstOrDefault();
+            this.IncompleteTests = new List<Test>();
+            this.CompletedTests = new List<Test>();
 
-            this.CompletedTests = this.dataManager.GetCompletedTests(this.SelectedSubject.Id, this.SelectedGrade);
+            if (this.SelectedGrade > 0 && this.SelectedExamType != null && this.SelectedSubject != null)
+            {
+                this.IncompleteTests = this.dataManager.GetIncompleteTests(this.SelectedExamType.Id, this.SelectedSubject.Id, this.SelectedGrade);
+                this.CompletedTests = this.dataManager.GetCompletedTests(this.SelectedExamType.Id, this.SelectedSubject.Id, this.SelectedGrade);
+            }
+
+            this.SelectedIncompleteTest = this.IncompleteTests.FirstOrDefault();
             this.SelectedCompletedTest = this.CompletedTests.FirstOrDefault();
         }
 
@@ -1386,6 +1488,7 @@
 
             var test = new Test
             {
+                ExamTypeId = this.SelectedExamType.Id,
                 SubjectId = this.SelectedSubject.Id,
                 ExamId = this.SelectedExam.Id,
                 Grade = this.SelectedGrade,
@@ -1401,7 +1504,7 @@
                 Status = "Incomplete",
             };
 
-            this.dataManager.InsertTest(test, test.Grade);
+            this.dataManager.InsertTest(test);
 
             this.StartSelectedTest(test, questions, 0);
         }
@@ -1487,7 +1590,7 @@
             this.CurrentTest.LastIndex = this.CurrentIndex;
             this.CurrentTest.Answers = Helper.AnswerToString(this.answers);
 
-            this.dataManager.UpdatetTest(this.CurrentTest, this.CurrentTest.Grade);
+            this.dataManager.UpdatetTest(this.CurrentTest);
 
             this.AnswerCommand?.RaiseCanExecuteChanged();
 
@@ -1525,7 +1628,7 @@
                 this.CurrentTest.Score = this.questions.Count(x => this.answers[x.Id] == x.Answer);
                 this.CurrentTest.Status = "Completed";
 
-                this.dataManager.UpdatetTest(this.CurrentTest, this.CurrentTest.Grade);
+                this.dataManager.UpdatetTest(this.CurrentTest);
                 this.LoadTests();
 
                 this.IsTestInProgress = false;
@@ -1657,6 +1760,7 @@
 
             var test = new Test
             {
+                ExamTypeId = this.SelectedCompletedTest.ExamTypeId,
                 SubjectId = this.SelectedCompletedTest.SubjectId,
                 ExamId = null,
                 Grade = this.SelectedCompletedTest.Grade,
@@ -1672,7 +1776,7 @@
                 Status = "Incomplete",
             };
 
-            this.dataManager.InsertTest(test, test.Grade);
+            this.dataManager.InsertTest(test);
 
             this.StartSelectedTest(test, questions, 0);
         }
@@ -1701,7 +1805,7 @@
 
             var chosenQuestions = new List<Question>();
             var rand = new Random();
-            var availableQuestions = this.dataManager.GetAvailableQuestions(this.SelectedSubject.Id, this.SelectedGrade).OrderBy(x => x.Level).GroupBy(x => x.Level);
+            var availableQuestions = this.dataManager.GetAvailableQuestions(this.SelectedExamType.Id, this.SelectedSubject.Id, this.SelectedGrade).OrderBy(x => x.Level).GroupBy(x => x.Level);
             foreach (var questionGroup in availableQuestions)
             {
                 var questionSubset = questionGroup.Select(x => x).ToList();
@@ -1736,6 +1840,7 @@
 
             var test = new Test
             {
+                ExamTypeId = this.SelectedExamType.Id,
                 SubjectId = this.SelectedSubject.Id,
                 ExamId = 0,
                 Grade = this.SelectedGrade,
@@ -1751,7 +1856,7 @@
                 Status = "Incomplete",
             };
 
-            this.dataManager.InsertTest(test, test.Grade);
+            this.dataManager.InsertTest(test);
 
             this.StartSelectedTest(test, questions, 0);
         }
@@ -1761,7 +1866,7 @@
         /// </summary>
         /// <param name="param">The parameter.</param>
         /// <returns>True if can execute, False otherwise.</returns>
-        private bool GenerateTestCommandCanExecute(object param) => this.TotalQuestions.HasValue && this.TotalQuestions.Value > 0;
+        private bool GenerateTestCommandCanExecute(object param) => this.SelectedSubject != null && this.TotalQuestions.HasValue && this.TotalQuestions.Value > 0;
 
         /// <summary>
         /// Pauses the timer command execute.
@@ -1805,7 +1910,7 @@
             {
                 if (DXMessageBox.Show("Are you sure you want to delete this test?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    this.dataManager.DeleteTest(testToDelete.Id, testToDelete.Grade);
+                    this.dataManager.DeleteTest(testToDelete.Id);
                     this.LoadTests();
                 }
             }

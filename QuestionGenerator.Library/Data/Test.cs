@@ -21,6 +21,14 @@ namespace QuestionGenerator.Library.Data
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the exam type identifier.
+        /// </summary>
+        /// <value>
+        /// The exam type identifier.
+        /// </value>
+        public int ExamTypeId { get; set; }
+
+        /// <summary>
         /// Gets or sets the subject identifier.
         /// </summary>
         /// <value>

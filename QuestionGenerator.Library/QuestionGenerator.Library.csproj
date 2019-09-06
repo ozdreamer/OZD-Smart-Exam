@@ -54,6 +54,7 @@
     <Compile Include="DataModels\ReviewResultDataModel.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\Exam.cs" />
+    <Compile Include="Data\ExamType.cs" />
     <Compile Include="Data\Question.cs" />
     <Compile Include="Data\Subject.cs" />
     <Compile Include="Data\Test.cs" />

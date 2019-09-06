@@ -15,7 +15,7 @@
         /// <summary>
         /// The connections
         /// </summary>
-        private IDictionary<int, SQLiteConnection> connections;
+        private readonly IDictionary<int, SQLiteConnection> connections;
 
         /// <summary>
         /// The test connection
@@ -52,7 +52,7 @@
                 var tokens = connectionString.Name.Split('.');
                 if (tokens.Length == 2 && int.TryParse(tokens[1], out int grade))
                 {
-                    this.connections[grade] = new SQLiteConnection(connectionString.ConnectionString);
+                    this.connections[grade] = new SQLiteConnection($"{connectionString.ConnectionString}");
                     this.connections[grade].Open();
                 }
             }
@@ -110,17 +110,44 @@
         }
 
         /// <summary>
+        /// Gets all exam types.
+        /// </summary>
+        /// <param name="grade">The grade.</param>
+        /// <returns>The exam types.</returns>
+        public IEnumerable<ExamType> GetAllExamTypes(int grade)
+        {
+            var examTypes = new List<ExamType>();
+            using (var command = new SQLiteCommand($"SELECT * FROM ExamType", this.connections[grade]))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var examType = new ExamType
+                        {
+                            Id = Convert.ToInt32(reader[nameof(ExamType.Id)]),
+                            Title = Convert.ToString(reader[nameof(ExamType.Title)])
+                        };
+
+                        examTypes.Add(examType);
+                    }
+                }
+            }
+
+            return examTypes;
+        }
+
+        /// <summary>
         /// Gets the available exams.
         /// </summary>
+        /// <param name="examTypeId">Type of the exam.</param>
         /// <param name="subjectId">The subject identifier.</param>
         /// <param name="grade">The grade.</param>
-        /// <returns>
-        /// List of exams.
-        /// </returns>
-        public IEnumerable<Exam> GetAvailableExams(int subjectId, int grade)
+        /// <returns>List of exams.</returns>
+        public IEnumerable<Exam> GetAvailableExams(int examTypeId, int subjectId, int grade)
         {
             var subjects = new List<Exam>();
-            using (var command = new SQLiteCommand($"SELECT * FROM Exam Where SubjectId={subjectId} AND Grade={grade} ORDER BY Year DESC", this.connections[grade]))
+            using (var command = new SQLiteCommand($"SELECT * FROM Exam WHERE TypeId={examTypeId} AND SubjectId={subjectId} AND Grade={grade} ORDER BY Year DESC", this.connections[grade]))
             {
                 using (var reader = command.ExecuteReader())
                 {
@@ -129,6 +156,7 @@
                         var exam = new Exam
                         {
                             Id = Convert.ToInt32(reader[nameof(Exam.Id)]),
+                            TypeId = Convert.ToInt32(reader[nameof(Exam.TypeId)]),
                             SubjectId = Convert.ToInt32(reader[nameof(Exam.SubjectId)]),
                             Grade = Convert.ToInt32(reader[nameof(Exam.Grade)]),
                             Year = Convert.ToInt32(reader[nameof(Exam.Year)]),
@@ -194,13 +222,16 @@
         /// <summary>
         /// Gets the available questions.
         /// </summary>
+        /// <param name="examTypeId">The exam type identifier.</param>
         /// <param name="subjectId">The subject identifier.</param>
         /// <param name="grade">The grade.</param>
-        /// <returns>Collection of questions.</returns>
-        public IEnumerable<Question> GetAvailableQuestions(int subjectId, int grade)
+        /// <returns>
+        /// Collection of questions.
+        /// </returns>
+        public IEnumerable<Question> GetAvailableQuestions(int examTypeId, int subjectId, int grade)
         {
             var questions = new List<Question>();
-            using (var command = new SQLiteCommand($"SELECT * FROM Question q INNER JOIN Exam e ON q.ExamId = e.Id WHERE e.SubjectId={subjectId} AND e.Grade={grade}", this.connections[grade]))
+            using (var command = new SQLiteCommand($"SELECT * FROM Question q INNER JOIN Exam e ON q.ExamId = e.Id WHERE e.TypeId={examTypeId} AND e.SubjectId={subjectId} AND e.Grade={grade}", this.connections[grade]))
             {
                 using (var reader = command.ExecuteReader())
                 {
@@ -218,15 +249,14 @@
         /// Inserts the test.
         /// </summary>
         /// <param name="test">The test.</param>
-        /// <param name="grade">The grade.</param>
-        public void InsertTest(Test test, int grade)
+        public void InsertTest(Test test)
         {
-            using (var command = new SQLiteCommand($"INSERT INTO Test(Name,SubjectId,ExamId,Grade,TotalQuestions,LastIndex,Score,Answers,StartDate,StartTime,EndDate,EndTime,TotalTime,ElapsedTime,Status) VALUES" +
-                $"('{test.Name}',{test.SubjectId},{test.ExamId?.ToString() ?? "null"},{test.Grade},{test.TotalQuestions},{test.LastIndex},{test.Score},'{test.Answers}','{test.StartDate.ToString("yyyy-MM-dd")}','{test.StartTime}','{test.EndDate.ToString("yyyy-MM-dd")}','{test.EndTime}','{test.TotalTime}','{test.ElapsedTime}','{test.Status}')", this.testConnection))
+            using (var command = new SQLiteCommand($"INSERT INTO Test(Name,ExamTypeId,SubjectId,ExamId,Grade,TotalQuestions,LastIndex,Score,Answers,StartDate,StartTime,EndDate,EndTime,TotalTime,ElapsedTime,Status) VALUES" +
+                $"('{test.Name}',{test.ExamTypeId},{test.SubjectId},{test.ExamId?.ToString() ?? "null"},{test.Grade},{test.TotalQuestions},{test.LastIndex},{test.Score},'{test.Answers}','{test.StartDate.ToString("yyyy-MM-dd")}','{test.StartTime}','{test.EndDate.ToString("yyyy-MM-dd")}','{test.EndTime}','{test.TotalTime}','{test.ElapsedTime}','{test.Status}')", this.testConnection))
             {
                 command.ExecuteNonQuery();
 
-                using (var command2 = new SQLiteCommand("select last_insert_rowid()", this.connections[grade]))
+                using (var command2 = new SQLiteCommand("select last_insert_rowid()", this.testConnection))
                 {
                     test.Id = (int)(long)command2.ExecuteScalar();
                 }
@@ -237,8 +267,7 @@
         /// Updatets the test.
         /// </summary>
         /// <param name="test">The test.</param>
-        /// <param name="grade">The grade.</param>
-        public void UpdatetTest(Test test, int grade)
+        public void UpdatetTest(Test test)
         {
             using (var command = new SQLiteCommand($"UPDATE Test SET Score={test.Score},LastIndex={test.LastIndex},Answers='{test.Answers}',EndDate='{test.EndDate.ToString("yyyy-MM-dd")}',EndTime='{test.EndTime}',ElapsedTime='{test.ElapsedTime}',Status='{test.Status}' WHERE Id={test.Id}", this.testConnection))
             {
@@ -249,13 +278,16 @@
         /// <summary>
         /// Gets the completed tests.
         /// </summary>
+        /// <param name="examTypeId">The exam type identifier.</param>
         /// <param name="subjectId">The subject identifier.</param>
         /// <param name="grade">The grade.</param>
-        /// <returns>Collection of tests.</returns>
-        public IEnumerable<Test> GetCompletedTests(int subjectId, int grade)
+        /// <returns>
+        /// Collection of tests.
+        /// </returns>
+        public IEnumerable<Test> GetCompletedTests(int examTypeId, int subjectId, int grade)
         {
             var tests = new List<Test>();
-            using (var command = new SQLiteCommand($"SELECT * FROM Test Where SubjectId={subjectId} AND Grade={grade} AND Status='Completed' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
+            using (var command = new SQLiteCommand($"SELECT * FROM Test Where ExamTypeId={examTypeId} AND SubjectId={subjectId} AND Grade={grade} AND Status='Completed' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
             {
                 using (var reader = command.ExecuteReader())
                 {
@@ -295,13 +327,16 @@
         /// <summary>
         /// Gets the completed tests.
         /// </summary>
+        /// <param name="examTypeId">The exam type identifier.</param>
         /// <param name="subjectId">The subject identifier.</param>
         /// <param name="grade">The grade.</param>
-        /// <returns>Collection of tests.</returns>
-        public IEnumerable<Test> GetIncompleteTests(int subjectId, int grade)
+        /// <returns>
+        /// Collection of tests.
+        /// </returns>
+        public IEnumerable<Test> GetIncompleteTests(int examTypeId, int subjectId, int grade)
         {
             var tests = new List<Test>();
-            using (var command = new SQLiteCommand($"SELECT * FROM Test Where SubjectId={subjectId} AND Grade={grade} AND Status='Incomplete' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
+            using (var command = new SQLiteCommand($"SELECT * FROM Test Where ExamTypeId={examTypeId} AND SubjectId={subjectId} AND Grade={grade} AND Status='Incomplete' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
             {
                 using (var reader = command.ExecuteReader())
                 {
@@ -319,8 +354,7 @@
         /// Deletes the test.
         /// </summary>
         /// <param name="testId">The test identifier.</param>
-        /// <param name="grade">The grade.</param>
-        public void DeleteTest(int testId, int grade)
+        public void DeleteTest(int testId)
         {
             using (var command = new SQLiteCommand($"DELETE FROM Test Where Id={testId}", this.testConnection))
             {
@@ -357,6 +391,7 @@
             {
                 Id = Convert.ToInt32(reader[nameof(Test.Id)]),
                 Name = Convert.ToString(reader[nameof(Test.Name)]),
+                ExamTypeId = Convert.ToInt32(reader[nameof(Test.ExamTypeId)]),
                 ExamId = reader[nameof(Test.ExamId)] == DBNull.Value ? null : (int?)Convert.ToInt32(reader[nameof(Test.ExamId)]),
                 SubjectId = Convert.ToInt32(reader[nameof(Test.SubjectId)]),
                 Grade = Convert.ToInt32(reader[nameof(Test.Grade)]),

@@ -11,6 +11,14 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public int TypeId { get; set; }
+
+        /// <summary>
         /// Gets or sets the subject identifier.
         /// </summary>
         /// <value>

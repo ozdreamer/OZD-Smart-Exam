@@ -71,8 +71,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -81,18 +79,19 @@
                         <ColumnDefinition Width="25*"/>
                         <ColumnDefinition Width="75*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Label Content="Grade" Style="{StaticResource LabelInGridStyle}"/>
                     <dxe:ComboBoxEdit ItemsSource="{Binding Grades}" SelectedItem="{Binding SelectedGrade}" Style="{StaticResource TextInGridStyle}" IsTextEditable="False" Grid.Column="1"/>
+                    <Label Content="Exam Type" Style="{StaticResource LabelInGridStyle}" Grid.Row="1"/>
+                    <dxe:ComboBoxEdit ItemsSource="{Binding ExamTypes}" SelectedItem="{Binding SelectedExamType}" Style="{StaticResource TextInGridStyle}" DisplayMember="Title" IsTextEditable="False" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="Subject" Style="{StaticResource LabelInGridStyle}" Grid.Row="2"/>
+                    <dxe:ComboBoxEdit ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}" Style="{StaticResource TextInGridStyle}" DisplayMember="Title" IsTextEditable="False" Grid.Row="2" Grid.Column="1"/>
                 </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Subject" Style="{StaticResource LabelInGridStyle}"/>
-                    <dxe:ComboBoxEdit ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}" Style="{StaticResource TextInGridStyle}" DisplayMember="Title" IsTextEditable="False" Grid.Column="1"/>
-                </Grid>
-                <GroupBox Grid.Row="2">
+                <GroupBox Grid.Row="1" Margin="3,0,3,0">
                     <GroupBox.Header>
                         <RadioButton Content="Resume Incomplete Test" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.IncompleteTest}}"/>
                     </GroupBox.Header>
@@ -111,8 +110,8 @@
                         <dx:SimpleButton Content="Resume" Command="{Binding ResumeExamCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2" />
                     </Grid>
                 </GroupBox>
-                
-                <GroupBox Grid.Row="3">
+
+                <GroupBox Grid.Row="2" Margin="3,0,3,0">
                     <GroupBox.Header>
                         <RadioButton Content="Past Exams" Grid.Row="3" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.PastExam}}"/>
                     </GroupBox.Header>
@@ -127,8 +126,8 @@
                         <dx:SimpleButton Content="Start" Command="{Binding StartTestCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2"/>
                     </Grid>
                 </GroupBox>
-                
-                <GroupBox Grid.Row="4">
+
+                <GroupBox Grid.Row="3" Margin="3,0,3,0">
                     <GroupBox.Header>
                         <RadioButton Content="Generate Random Test" Grid.Row="4" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.RandomTest}}"/>
                     </GroupBox.Header>
@@ -143,8 +142,8 @@
                         <dx:SimpleButton Content="Generate" Command="{Binding GenerateTestCommand}" Style="{StaticResource ButtonInGridStyle}" Width="75" Grid.Column="2"/>
                     </Grid>
                 </GroupBox>
-                
-                <GroupBox Grid.Row="5">
+
+                <GroupBox Grid.Row="4" Margin="3,0,3,0">
                     <GroupBox.Header>
                         <RadioButton Content="Review Completed Test" Grid.Row="5" HorizontalAlignment="Left" IsChecked="{Binding InputSelectionType, Converter={StaticResource InputSelectionTypeToBooleanConverter}, ConverterParameter={x:Static library:InputSelectionType.ReviewTest}}"/>
                     </GroupBox.Header>
@@ -185,8 +184,8 @@
                     </Grid>
                 </GroupBox>
 
-                <TextBlock Text="{Binding RemainingTimeText}" Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Arial Black" Foreground="Navy" FontWeight="Bold" Margin="10" Grid.Row="6"/>
-                <TextBlock Text="{Binding ExamProgressText}" Style="{StaticResource TestVisibleOnlyStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="32" FontFamily="Arial Black" Foreground="DarkRed" FontWeight="Bold" Margin="10" Grid.Row="7"/>
+                <TextBlock Text="{Binding RemainingTimeText}" Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Arial Black" Foreground="Navy" FontWeight="Bold" Margin="10" Grid.Row="5"/>
+                <TextBlock Text="{Binding ExamProgressText}" Style="{StaticResource TestVisibleOnlyStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="32" FontFamily="Arial Black" Foreground="DarkRed" FontWeight="Bold" Margin="10" Grid.Row="6"/>
 
             </Grid>
         </GroupBox>
