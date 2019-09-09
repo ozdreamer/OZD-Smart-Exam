@@ -15,7 +15,7 @@
     using QuestionGenerator.Library.Data;
     using QuestionGenerator.Library.DataModels;
     using QuestionGenerator.Library.Interfaces;
-
+    using QuestionGenerator.Library.License;
     using DelegateCommand = QuestionGenerator.Library.DelegateCommand;
 
     public class MainViewModel : PropertyChangedBase
@@ -1110,6 +1110,11 @@
         {
             //this.messageService = messageService;
             this.dataManager = new DataManager();
+            //LicenseManager.TempWriteLicenseFile();
+            if (LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo))
+            {
+                DXMessageBox.Show($"SN# {licenseInfo.MachineId} - Exp : {licenseInfo.Expiry.ToShortDateString()}");
+            }
 
             this.StartTestCommand = new DelegateCommand(this.StartTestCommandExecute, this.StartTestCommandCanExecute);
             this.NextQuestionCommand = new DelegateCommand(this.NextQuestionCommandExecute, this.NextQuestionCommandCanExecute);

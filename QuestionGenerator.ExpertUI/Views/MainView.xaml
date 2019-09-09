@@ -9,10 +9,12 @@
     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:vm="clr-namespace:QuestionGenerator.Library.ViewModels;assembly=QuestionGenerator.Library"
     xmlns:library="clr-namespace:QuestionGenerator.Library;assembly=QuestionGenerator.Library"
     xmlns:libconverters="clr-namespace:QuestionGenerator.Library.Resources.Converters;assembly=QuestionGenerator.Library"
     xmlns:localconverters="clr-namespace:QuestionGenerator.ExpertUI.Resources.Converters"
+    xmlns:views="clr-namespace:QuestionGenerator.ExpertUI.Views"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     mc:Ignorable="d"
     dx:ThemeManager.ThemeName="{Binding SelectedSkin}"
@@ -41,6 +43,9 @@
             <localconverters:SvgImageSourceConverter x:Key="SvgImageSourceConverter"/>
         </ResourceDictionary>
     </dx:DXWindow.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DXSplashScreenService SplashScreenType="views:SplashScreenView" ShowSplashScreenOnLoading="True"/>
+    </dxmvvm:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
