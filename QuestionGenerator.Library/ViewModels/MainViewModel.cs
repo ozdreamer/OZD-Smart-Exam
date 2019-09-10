@@ -1257,8 +1257,7 @@
         private void SetRemainingText()
         {
             var remainingTime = this.CurrentTest.TotalTime - this.CurrentTest.ElapsedTime;
-            var remainingText = remainingTime.ToString(@"h\:mm\:ss");
-            this.RemainingTimeText = remainingTime < TimeSpan.Zero ? $"-{remainingText}" : remainingText;
+            this.RemainingTimeText = remainingTime < TimeSpan.Zero ? $"-{remainingTime.ToString(@"h\:mm\:ss")}" : remainingTime.ToString(@"hh\:mm\:ss");
         }
 
         /// <summary>

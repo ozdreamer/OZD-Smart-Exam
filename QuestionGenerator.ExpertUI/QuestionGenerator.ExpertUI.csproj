@@ -65,6 +65,9 @@
     <Reference Include="DevExpress.Xpf.Core.v19.1">
       <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Core.v19.1.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Gauges.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Gauges.v19.1.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v19.1">
       <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Grid.v19.1.dll</HintPath>
     </Reference>

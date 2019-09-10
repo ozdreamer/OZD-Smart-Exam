@@ -76,6 +76,8 @@
         <Setter Property="Foreground" Value="Navy"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
     </Style>
     <Style TargetType="{x:Type dx:SimpleButton}" x:Key="OperationButton" BasedOn="{StaticResource TestVisibleOnlyStyle}">
         <Setter Property="Height" Value="75"/>

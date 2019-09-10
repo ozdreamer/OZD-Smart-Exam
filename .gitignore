@@ -263,3 +263,6 @@ __pycache__/
 # Custom directories
 Lib/
 Misc/
+Database/
+License/
+Images/

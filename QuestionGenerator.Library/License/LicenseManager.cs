@@ -14,13 +14,15 @@
         /// </summary>
         public static string GetDiskSerialKey()
         {
-            var searcher = new  ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
-            if (searcher.Get().OfType<ManagementObject>().FirstOrDefault() is ManagementObject mo)
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive"))
             {
-                return mo["SerialNumber"].ToString();
-            }
+                if (searcher.Get().OfType<ManagementObject>().FirstOrDefault() is ManagementObject mo)
+                {
+                    return mo["SerialNumber"].ToString();
+                }
 
-            return null;
+                return null;
+            }
         }
 
         /// <summary>

@@ -16,6 +16,7 @@
     xmlns:localconverters="clr-namespace:QuestionGenerator.ExpertUI.Resources.Converters"
     xmlns:views="clr-namespace:QuestionGenerator.ExpertUI.Views"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
     mc:Ignorable="d"
     dx:ThemeManager.ThemeName="{Binding SelectedSkin}"
     WindowState="Maximized"
@@ -173,8 +174,8 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <Ellipse Style="{StaticResource IndicatorEllipseStyle}" Fill="{DXBinding 'ExamId == null ? $Colors.Orange : ExamId == 0 ? $Colors.Blue : $Colors.Green'}" />
-                                        <TextBlock Text="{DXBinding 'ExamId != null ? Score : $string.Empty'}" Foreground="{DXBinding 'ExamId == null ? $Colors.Gray : $Colors.Black'}" Grid.Column="1" Width="20"/>
-                                        <TextBlock Text="{Binding Name}" Foreground="{DXBinding 'ExamId == null ? $Colors.Gray : $Colors.Black'}" Grid.Column="2" />
+                                        <TextBlock Text="{DXBinding 'ExamId != null ? Score : $string.Empty'}" Foreground="{DXBinding 'ExamId != null ? $Colors.Black : $Colors.Gray'}" Grid.Column="1" Width="20"/>
+                                        <TextBlock Text="{Binding Name}" Foreground="{DXBinding 'ExamId != null ? $Colors.Black : $Colors.Gray'}" Grid.Column="2" />
                                     </Grid>
                                 </DataTemplate>
                             </dxe:ComboBoxEdit.ItemTemplate>
@@ -189,9 +190,26 @@
                     </Grid>
                 </GroupBox>
 
-                <TextBlock Text="{Binding RemainingTimeText}" Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontFamily="Arial Black" Foreground="Navy" FontWeight="Bold" Margin="10" Grid.Row="5"/>
-                <TextBlock Text="{Binding ExamProgressText}" Style="{StaticResource TestVisibleOnlyStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="32" FontFamily="Arial Black" Foreground="DarkRed" FontWeight="Bold" Margin="10" Grid.Row="6"/>
+                <dxga:DigitalGaugeControl Text="{Binding RemainingTimeText}" SymbolCount="8" Margin="5" Height="75" VerticalAlignment="Top" Grid.Row="5"
+                                          Visibility="{Binding OperatingMode, Converter={StaticResource OperatingModeToVisibilityConverter}, ConverterParameter={x:Static library:OperatingMode.Test}}">
+                    <dxga:DigitalGaugeControl.Layers>
+                        <dxga:DigitalGaugeLayer/>
+                    </dxga:DigitalGaugeControl.Layers>
+                    <dxga:DigitalGaugeControl.Model>
+                        <dxga:DigitalDefaultModel />
+                    </dxga:DigitalGaugeControl.Model>
+                    <dxga:DigitalGaugeControl.SymbolView>
+                        <dxga:SevenSegmentsView>
+                            <dxga:SevenSegmentsView.Animation>
+                                <dxga:BlinkingAnimation RefreshTime="00:000:00.5" SymbolsStates="0 0 1 0 0 1 0 0" />
+                            </dxga:SevenSegmentsView.Animation>
+                        </dxga:SevenSegmentsView>
+                    </dxga:DigitalGaugeControl.SymbolView>
+                </dxga:DigitalGaugeControl>
 
+                <dxe:ProgressBarEdit ContentDisplayMode="Content" FontWeight="Bold" FontSize="20" Foreground="Gray" Height="40" Background="Gray" Grid.Row="6"
+                                     Maximum="{Binding CurrentTest.TotalQuestions}" Value="{DXBinding 'CurrentIndex + 1'}"
+                                     Content="{Binding ExamProgressText}" Style="{StaticResource TestVisibleOnlyStyle}"/>
             </Grid>
         </GroupBox>
         
