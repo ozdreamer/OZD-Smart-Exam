@@ -42,34 +42,34 @@
     <StartupObject>QuestionGenerator.ExpertApp.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v18.2, Version=18.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v19.1">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Data.v18.2.dll</HintPath>
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Data.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Utils.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Utils.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Charts.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Charts.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Charts.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Charts.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Core.v18.2, Version=18.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Xpf.Core.v19.1">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Core.v18.2.dll</HintPath>
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Core.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v18.2">
-      <HintPath>C:\Users\khasan\Documents\Visual Studio 2017\Projects\DevExpressTest\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Grid.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Grid.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Grid.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.DXStyle.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Themes.DXStyle.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Themes.DXStyle.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Themes.DXStyle.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Themes.Office2016White.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Themes.Office2016White.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.Office2016WhiteSE.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Themes.Office2016WhiteSE.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016WhiteSE.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Themes.Office2016WhiteSE.v19.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.VS2017Light.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Themes.VS2017Light.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Themes.VS2017Light.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Themes.VS2017Light.v19.1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

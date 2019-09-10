@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Xpf.Core.v18.2">
-      <HintPath>..\Lib\DevExpress\DXperience\18.2\DevExpress.Xpf.Core.v18.2.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Core.v19.1">
+      <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Core.v19.1.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
