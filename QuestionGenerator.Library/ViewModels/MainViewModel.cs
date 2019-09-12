@@ -11,6 +11,9 @@
     using System.Windows.Threading;
 
     using Caliburn.Micro;
+    using DevExpress.Mvvm;
+    using DevExpress.Mvvm.POCO;
+    using DevExpress.Mvvm.UI;
     using DevExpress.Xpf.Core;
     using QuestionGenerator.Library.Data;
     using QuestionGenerator.Library.DataModels;
@@ -41,6 +44,11 @@
         /// The message service
         /// </summary>
         private readonly IMessageService messageService;
+
+        /// <summary>
+        /// The floating question view model
+        /// </summary>
+        private FloatingQuestionViewModel floatingQuestionViewModel;
 
         #endregion
 
@@ -75,6 +83,41 @@
                 this.NotifyOfPropertyChange(() => this.SelectedSkin);
             }
         }
+
+
+        /// <summary>
+        /// Stores the value for the <see cref="IsLicenseValid" /> property.
+        /// </summary>
+        private bool isLicenseValid = false;
+
+        /// <summary>
+        /// Gets or sets the IsLicenseValid.
+        /// </summary>
+        /// <value>Flat to check whether the license is valid or not.</value>
+        public bool IsLicenseValid
+        {
+            get
+            {
+                return this.isLicenseValid;
+            }
+
+            set
+            {
+                if (this.isLicenseValid != value)
+                {
+                    this.isLicenseValid = value;
+                    this.NotifyOfPropertyChange(() => this.IsLicenseValid);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the window service.
+        /// </summary>
+        /// <value>
+        /// The window service.
+        /// </value>
+        //private IWindowService WindowService => this.GetService<IWindowService>();
 
         #region Primary Data
 
@@ -365,6 +408,8 @@
                         var exam = this.AvailableExams.FirstOrDefault(x => x.Id == value.ExamId);
                         this.QuestionImage = Path.Combine(this.imageDirectory, $"{this.SelectedSubject.Id}", $"{exam.Grade}", $"{exam.Year}", $"{value.Number}.png");
                     }
+
+                    this.DisplayAdditionalQuestion();
                 }
 
                 this.NextQuestionCommand?.RaiseCanExecuteChanged();
@@ -1110,11 +1155,7 @@
         {
             //this.messageService = messageService;
             this.dataManager = new DataManager();
-            //LicenseManager.TempWriteLicenseFile();
-            if (LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo))
-            {
-                DXMessageBox.Show($"SN# {licenseInfo.MachineId} - Exp : {licenseInfo.Expiry.ToShortDateString()}");
-            }
+            this.floatingQuestionViewModel = new FloatingQuestionViewModel();
 
             this.StartTestCommand = new DelegateCommand(this.StartTestCommandExecute, this.StartTestCommandCanExecute);
             this.NextQuestionCommand = new DelegateCommand(this.NextQuestionCommandExecute, this.NextQuestionCommandCanExecute);
@@ -1138,6 +1179,17 @@
         /// </summary>
         public void Load()
         {
+            //LicenseManager.TempWriteLicenseFile();
+            try
+            {
+                this.IsLicenseValid = LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show($"Invalid license. {ex.Message}");
+                return;
+            }
+
             this.dataManager.Initialize();
 
             this.Grades = this.dataManager.GetGrades();
@@ -1203,6 +1255,23 @@
 
                     return r;
                 });
+        }
+
+        /// <summary>
+        /// Displays the additional question.
+        /// </summary>
+        private void DisplayAdditionalQuestion()
+        {
+            if (!string.IsNullOrWhiteSpace(this.SelectedQuestion?.AdditionalImage) && this.QuestionImage != null)
+            {
+                var directory = Path.GetDirectoryName(this.QuestionImage);
+                this.floatingQuestionViewModel.QuestionImage = Path.Combine(directory, this.SelectedQuestion.AdditionalImage);
+                //this.WindowService.Show("FloatingQuestionView", this.floatingQuestionViewModel);
+            }
+            else
+            {
+                //this.WindowService.Close();
+            }
         }
 
         /// <summary>
@@ -1762,6 +1831,7 @@
                 return res;
             });
 
+            var exam = this.dataManager.GetExam(this.SelectedCompletedTest.ExamId.Value, this.SelectedCompletedTest.Grade);
             var test = new Test
             {
                 ExamTypeId = this.SelectedCompletedTest.ExamTypeId,
@@ -1776,7 +1846,7 @@
                 LastIndex = -1,
                 Score = 0,
                 Answers = Helper.AnswerToString(answers),
-                Name = $"{this.SelectedExam.Year} (R)-{DateTime.Today.ToShortDateString()}-{DateTime.Now.Hour:D2}:{DateTime.Now.Minute:D2}",
+                Name = $"{exam?.Year} (R)-{DateTime.Today.ToShortDateString()}-{DateTime.Now.Hour:D2}:{DateTime.Now.Minute:D2}",
                 Status = "Incomplete",
             };
 
@@ -1790,7 +1860,7 @@
         /// </summary>
         /// <param name="param">The parameter.</param>
         /// <returns>True if can execute, False otherwise.</returns>
-        private bool RetakeTestCommandCanExecute(object param) => this.SelectedCompletedTest != null && this.ReviewTestTime.HasValue && this.ReviewTestTime.Value > 0;
+        private bool RetakeTestCommandCanExecute(object param) => this.SelectedCompletedTest != null && this.SelectedCompletedTest.ExamId != null && this.ReviewTestTime.HasValue && this.ReviewTestTime.Value > 0;
 
         /// <summary>
         /// Generates the test command execute.

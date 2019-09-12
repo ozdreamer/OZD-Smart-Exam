@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Mvvm.v19.1, Version=19.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v19.1">
       <HintPath>..\..\Lib\DevExpress\DXperience\19.1\DevExpress.Xpf.Core.v19.1.dll</HintPath>
     </Reference>
@@ -72,6 +73,7 @@
     <Compile Include="Resources\Converters\OperatingModeToVisibilityConverter.cs" />
     <Compile Include="Resources\Converters\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="SettingsManager.cs" />
+    <Compile Include="ViewModels\FloatingQuestionViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

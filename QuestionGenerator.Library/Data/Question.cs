@@ -49,5 +49,13 @@
         /// The level.
         /// </value>
         public DifficultyLevel Level { get; set; }
+
+        /// <summary>
+        /// Gets or sets the additional image.
+        /// </summary>
+        /// <value>
+        /// The additional image.
+        /// </value>
+        public string AdditionalImage { get; set; }
     }
 }

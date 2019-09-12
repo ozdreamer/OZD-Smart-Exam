@@ -42,7 +42,7 @@
                 throw new FileNotFoundException();
             }
 
-            using (var stream = File.Open(Path.GetFullPath(licenseFile), FileMode.Open, FileAccess.ReadWrite))
+            using (var stream = File.Open(Path.GetFullPath(licenseFile), FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 var formatter = new BinaryFormatter();
                 var rawObject = formatter.Deserialize(stream);
@@ -67,6 +67,8 @@
                 if (string.IsNullOrWhiteSpace(licenseInfo.MachineId))
                 {
                     licenseInfo.MachineId = serialKey;
+
+                    stream.Seek(0, SeekOrigin.Begin);
                     formatter.Serialize(stream, licenseInfo);
                     stream.Flush();
                     stream.Close();
@@ -87,12 +89,11 @@
             using (var stream = File.Open(Path.GetFullPath(licenseFile), FileMode.Create, FileAccess.ReadWrite))
             {
                 var formatter = new BinaryFormatter();
-                var serialKey = GetDiskSerialKey();
                 var licenseInfo = new LicenseInfo
                 {
                     Expiry = new DateTime(2020, 12, 31),
                     Key = Guid.NewGuid().ToString(),
-                    MachineId = GetDiskSerialKey(),
+                    MachineId = null,
                     Version = "1.0",
                 };
 

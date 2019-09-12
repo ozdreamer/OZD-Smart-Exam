@@ -153,21 +153,34 @@
                 {
                     while (reader.Read())
                     {
-                        var exam = new Exam
-                        {
-                            Id = Convert.ToInt32(reader[nameof(Exam.Id)]),
-                            TypeId = Convert.ToInt32(reader[nameof(Exam.TypeId)]),
-                            SubjectId = Convert.ToInt32(reader[nameof(Exam.SubjectId)]),
-                            Grade = Convert.ToInt32(reader[nameof(Exam.Grade)]),
-                            Year = Convert.ToInt32(reader[nameof(Exam.Year)]),
-                        };
-
-                        subjects.Add(exam);
+                        subjects.Add(ReadExam(reader));
                     }
                 }
             }
 
             return subjects;
+        }
+
+        /// <summary>
+        /// Gets the exam.
+        /// </summary>
+        /// <param name="examId">The exam identifier.</param>
+        /// <param name="grade">The grade.</param>
+        /// <returns>The exam.</returns>
+        public Exam GetExam(int examId, int grade)
+        {
+            using (var command = new SQLiteCommand($"SELECT * FROM Exam WHERE Id={examId}", this.connections[grade]))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return ReadExam(reader);
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -406,6 +419,21 @@
                 TotalTime = Convert.ToDateTime(reader[nameof(Test.TotalTime)]).TimeOfDay,
                 ElapsedTime = Convert.ToDateTime(reader[nameof(Test.ElapsedTime)]).TimeOfDay,
                 Status = Convert.ToString(reader[nameof(Test.Status)]),
+            };
+        }
+
+        /// <summary>Reads the exam.</summary>
+        /// <param name="reader">The reader.</param>
+        /// <returns>The exam.</returns>
+        private static Exam ReadExam(SQLiteDataReader reader)
+        {
+            return new Exam
+            {
+                Id = Convert.ToInt32(reader[nameof(Exam.Id)]),
+                TypeId = Convert.ToInt32(reader[nameof(Exam.TypeId)]),
+                SubjectId = Convert.ToInt32(reader[nameof(Exam.SubjectId)]),
+                Grade = Convert.ToInt32(reader[nameof(Exam.Grade)]),
+                Year = Convert.ToInt32(reader[nameof(Exam.Year)]),
             };
         }
 

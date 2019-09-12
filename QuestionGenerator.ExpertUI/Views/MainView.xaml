@@ -37,6 +37,11 @@
                 <ResourceDictionary Source="../Resources/Styles/Styles.xaml"/>
                 <ResourceDictionary Source="../Resources/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="GrayBrush">Gray</SolidColorBrush>
+            <SolidColorBrush x:Key="BlackBrush">Black</SolidColorBrush>
+            <SolidColorBrush x:Key="GreenBrush">Green</SolidColorBrush>
+            <SolidColorBrush x:Key="OrangeBrush">Orange</SolidColorBrush>
+            <SolidColorBrush x:Key="BlueBrush">Blue</SolidColorBrush>
             <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
             <libconverters:ReverseBooleanToVisibilityConverter x:Key="ReverseVisibilityConverter"/>
             <libconverters:OperatingModeToVisibilityConverter x:Key="OperatingModeToVisibilityConverter"/>
@@ -46,6 +51,7 @@
     </dx:DXWindow.Resources>
     <dxmvvm:Interaction.Behaviors>
         <dx:DXSplashScreenService SplashScreenType="views:SplashScreenView" ShowSplashScreenOnLoading="True"/>
+        <dxmvvm:WindowService/>
     </dxmvvm:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
@@ -69,7 +75,7 @@
         </dxb:BarContainerControl>
 
         <!--Options-->
-        <GroupBox Header="Options" Style="{StaticResource MainGroupBoxStyle}" IsEnabled="{DXBinding 'IsTestInProgress? false : true'}" Width="Auto" Grid.Row="1">
+        <GroupBox Header="Options" Style="{StaticResource MainGroupBoxStyle}" IsEnabled="{DXBinding '!IsLicenseValid or IsTestInProgress? false : true'}" Width="Auto" Grid.Row="1">
             <Grid Style="{StaticResource GridInGroupStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -173,9 +179,9 @@
                                             <ColumnDefinition/>
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
-                                        <Ellipse Style="{StaticResource IndicatorEllipseStyle}" Fill="{DXBinding 'ExamId == null ? $Colors.Orange : ExamId == 0 ? $Colors.Blue : $Colors.Green'}" />
-                                        <TextBlock Text="{DXBinding 'ExamId != null ? Score : $string.Empty'}" Foreground="{DXBinding 'ExamId != null ? $Colors.Black : $Colors.Gray'}" Grid.Column="1" Width="20"/>
-                                        <TextBlock Text="{Binding Name}" Foreground="{DXBinding 'ExamId != null ? $Colors.Black : $Colors.Gray'}" Grid.Column="2" />
+                                        <Ellipse Style="{StaticResource IndicatorEllipseStyle}" Fill="{DXBinding 'ExamId == null ? @r(OrangeBrush) : ExamId == 0 ? @r(BlueBrush) : @r(GreenBrush)'}" />
+                                        <TextBlock Text="{DXBinding 'ExamId != null ? Score : $string.Empty'}" Grid.Column="1" Width="20"/>
+                                        <TextBlock Text="{Binding Name}" Foreground="{DXBinding 'ExamId != null ? @r(BlackBrush) : @r(GrayBrush)'}" Grid.Column="2" />
                                     </Grid>
                                 </DataTemplate>
                             </dxe:ComboBoxEdit.ItemTemplate>
@@ -185,7 +191,7 @@
                         </dxe:ComboBoxEdit>
                         <dx:SimpleButton Content="Review" Command="{Binding ReviewTestCommand}" CommandParameter="{Binding SelectedCompletedTest}" Style="{StaticResource ButtonInGridStyle}" Grid.Column="2"/>
                         <Label Content="Time" Style="{StaticResource LabelInGridStyle}" Grid.Column="0" Grid.Row="1"/>
-                        <dxe:SpinEdit EditValue="{Binding ReviewTestTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextInGridStyle}" EditValueType="{x:Type sys:Int32}" AllowNullInput="True" MinValue="10" MaxValue="60" Grid.Column="1" Grid.Row="1"/>
+                        <dxe:SpinEdit EditValue="{Binding ReviewTestTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextInGridStyle}" EditValueType="{x:Type sys:Int32}" IsEnabled="{DXBinding 'SelectedCompletedTest != null and SelectedCompletedTest.ExamId != null'}" AllowNullInput="True" MinValue="10" MaxValue="60" Grid.Column="1" Grid.Row="1"/>
                         <dx:SimpleButton Content="Re-take" Command="{Binding RetakeTestCommand}" Style="{StaticResource ButtonInGridStyle}" Grid.Column="2" Grid.Row="1"/>
                     </Grid>
                 </GroupBox>
