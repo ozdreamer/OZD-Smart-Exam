@@ -180,12 +180,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\A.svg" />
+    <Resource Include="Resources\Images\A-Blue.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\D.svg" />
-    <Resource Include="Resources\Images\C.svg" />
-    <Resource Include="Resources\Images\B.svg" />
+    <Resource Include="Resources\Images\D-Blue.svg" />
+    <Resource Include="Resources\Images\C-Blue.svg" />
+    <Resource Include="Resources\Images\B-Blue.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuestionGenerator.Library\QuestionGenerator.Library.csproj">
@@ -201,6 +201,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\DXSplashScreen\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\A-Green.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\B-Green.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\C-Green.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\D-Green.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

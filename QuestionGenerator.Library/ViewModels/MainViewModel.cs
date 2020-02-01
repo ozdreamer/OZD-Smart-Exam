@@ -407,6 +407,7 @@
                     {
                         var exam = this.AvailableExams.FirstOrDefault(x => x.Id == value.ExamId);
                         this.QuestionImage = Path.Combine(this.imageDirectory, $"{this.SelectedSubject.Id}", $"{exam.Grade}", $"{exam.Year}", $"{value.Number}.png");
+                        this.AnswerGiven = this.answers.ContainsKey(value.Id) ? this.answers[value.Id] : string.Empty;
                     }
 
                     this.DisplayAdditionalQuestion();
@@ -427,6 +428,31 @@
         /// The answers
         /// </summary>
         private IDictionary<int, string> answers;
+
+        /// <summary>
+        /// Stores the value of AnswerGiven
+        /// </summary>
+        private string answerGiven;
+
+        /// <summary>
+        /// The answer given by the user.
+        /// </summary>
+        public string AnswerGiven
+        {
+            get
+            {
+                return this.answerGiven;
+            }
+
+            set
+            {
+                if (this.answerGiven != value)
+                {
+                    this.answerGiven = value;
+                    this.NotifyOfPropertyChange(() => this.AnswerGiven);
+                }
+            }
+        }
 
         #endregion
 
@@ -1270,7 +1296,7 @@
             }
             else
             {
-                //this.WindowService.Close();
+                // this.WindowService.Close();
             }
         }
 
@@ -1658,7 +1684,7 @@
         private void AnswerCommandExecute(object param)
         {
             var answer = param as string;
-            this.answers[this.SelectedQuestion.Id] = param as string;
+            this.answers[this.SelectedQuestion.Id] = answer;
 
             this.CurrentTest.LastIndex = this.CurrentIndex;
             this.CurrentTest.Answers = Helper.AnswerToString(this.answers);
@@ -1685,7 +1711,7 @@
         /// </summary>
         /// <param name="param">The parameter.</param>
         /// <returns>True if can execute, False otherwise.</returns>
-        private bool AnswerCommandCanExecute(object param) => this.SelectedQuestion != null && this.answers.ContainsKey(this.SelectedQuestion.Id) && this.answers[this.SelectedQuestion.Id] == null;
+        private bool AnswerCommandCanExecute(object param) => this.SelectedQuestion != null;
 
         /// <summary>
         /// Finishes the test command execute.

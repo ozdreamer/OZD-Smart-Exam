@@ -6,8 +6,12 @@
     <dx:SvgImageSource x:Key="StopSvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/Stop.svg"/>
     <dx:SvgImageSource x:Key="PauseSvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/Pause.svg"/>
     <dx:SvgImageSource x:Key="PlaySvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/Play.svg"/>
-    <dx:SvgImageSource x:Key="LetterASvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/A.svg"/>
-    <dx:SvgImageSource x:Key="LetterBSvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/B.svg"/>
-    <dx:SvgImageSource x:Key="LetterCSvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/C.svg"/>
-    <dx:SvgImageSource x:Key="LetterDSvg" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/D.svg"/>
+    <dx:SvgImageSource x:Key="LetterASvgBlue" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/A-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterBSvgBlue" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/B-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterCSvgBlue" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/C-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterDSvgBlue" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/D-BLue.svg"/>
+    <dx:SvgImageSource x:Key="LetterASvgGreen" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/A-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterBSvgGreen" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/B-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterCSvgGreen" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/C-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterDSvgGreen" Uri="pack://application:,,,/QuestionGenerator.ExpertUI;component/Resources/Images/D-Green.svg"/>
 </ResourceDictionary>

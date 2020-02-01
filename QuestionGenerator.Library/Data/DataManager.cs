@@ -390,6 +390,7 @@
                 Answer = Convert.ToString(reader[nameof(Question.Answer)]),
                 Category = Convert.ToInt32(reader[nameof(Question.Category)]),
                 Level = (DifficultyLevel)Convert.ToInt32(reader[nameof(Question.Level)]),
+                AdditionalImage = Convert.ToString(reader[nameof(Question.AdditionalImage)]),
             };
         }
 

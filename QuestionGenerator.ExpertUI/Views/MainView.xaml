@@ -346,28 +346,28 @@
                     <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="A">
                         <dx:SimpleButton.ContentTemplate>
                             <DataTemplate>
-                                <dx:DXImage Source="{StaticResource LetterASvg}"/>
+                                <dx:DXImage Source="{DXBinding '@a($Window).DataContext.AnswerGiven == `A` ? @r(LetterASvgGreen) : @r(LetterASvgBlue)'}"/>
                             </DataTemplate>
                         </dx:SimpleButton.ContentTemplate>
                     </dx:SimpleButton>
                     <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="B">
                         <dx:SimpleButton.ContentTemplate>
                             <DataTemplate>
-                                <dx:DXImage Source="{StaticResource LetterBSvg}"/>
+                                <dx:DXImage Source="{DXBinding '@a($Window).DataContext.AnswerGiven == `B` ? @r(LetterBSvgGreen) : @r(LetterBSvgBlue)'}"/>
                             </DataTemplate>
                         </dx:SimpleButton.ContentTemplate>
                     </dx:SimpleButton>
                     <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="C">
                         <dx:SimpleButton.ContentTemplate>
                             <DataTemplate>
-                                <dx:DXImage Source="{StaticResource LetterCSvg}"/>
+                                <dx:DXImage Source="{DXBinding '@a($Window).DataContext.AnswerGiven == `C` ? @r(LetterCSvgGreen) : @r(LetterCSvgBlue)'}"/>
                             </DataTemplate>
                         </dx:SimpleButton.ContentTemplate>
                     </dx:SimpleButton>
                     <dx:SimpleButton Style="{StaticResource AnswerButtonStyle}" Command="{Binding AnswerCommand}" CommandParameter="D">
                         <dx:SimpleButton.ContentTemplate>
                             <DataTemplate>
-                                <dx:DXImage Source="{StaticResource LetterDSvg}"/>
+                                <dx:DXImage Source="{DXBinding '@a($Window).DataContext.AnswerGiven == `D` ? @r(LetterDSvgGreen) : @r(LetterDSvgBlue)'}"/>
                             </DataTemplate>
                         </dx:SimpleButton.ContentTemplate>
                     </dx:SimpleButton>
