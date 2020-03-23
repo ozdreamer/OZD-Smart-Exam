@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data.SQLite;
+    using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// The database manager.
@@ -52,8 +54,12 @@
                 var tokens = connectionString.Name.Split('.');
                 if (tokens.Length == 2 && int.TryParse(tokens[1], out int grade))
                 {
-                    this.connections[grade] = new SQLiteConnection($"{connectionString.ConnectionString}");
-                    this.connections[grade].Open();
+                    var filePath = Regex.Replace(connectionString.ConnectionString.Trim(), "[D|d]ata [S|s]ource=*", string.Empty);
+                    if (File.Exists(Path.GetFullPath(filePath)))
+                    {
+                        this.connections[grade] = new SQLiteConnection($"{connectionString.ConnectionString}");
+                        this.connections[grade].Open();
+                    }
                 }
             }
         }
@@ -323,7 +329,7 @@
         public IEnumerable<Test> GetCompletedTestsByExam(int examId, int grade)
         {
             var tests = new List<Test>();
-            using (var command = new SQLiteCommand($"SELECT * FROM Test Where ExamId={examId} AND Status='Completed' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
+            using (var command = new SQLiteCommand($"SELECT * FROM Test Where ExamId={examId} AND Grade={grade} AND Status='Completed' ORDER BY EndDate DESC, EndTime DESC", this.testConnection))
             {
                 using (var reader = command.ExecuteReader())
                 {
@@ -390,7 +396,7 @@
                 Answer = Convert.ToString(reader[nameof(Question.Answer)]),
                 Category = Convert.ToInt32(reader[nameof(Question.Category)]),
                 Level = (DifficultyLevel)Convert.ToInt32(reader[nameof(Question.Level)]),
-                AdditionalImage = Convert.ToString(reader[nameof(Question.AdditionalImage)]),
+                // AdditionalImage = Convert.ToString(reader[nameof(Question.AdditionalImage)]),
             };
         }
 

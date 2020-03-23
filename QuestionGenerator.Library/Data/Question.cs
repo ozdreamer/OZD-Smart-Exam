@@ -56,6 +56,6 @@
         /// <value>
         /// The additional image.
         /// </value>
-        public string AdditionalImage { get; set; }
+        // public string AdditionalImage { get; set; }
     }
 }

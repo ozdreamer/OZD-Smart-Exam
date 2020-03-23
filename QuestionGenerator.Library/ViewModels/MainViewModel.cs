@@ -410,7 +410,7 @@
                         this.AnswerGiven = this.answers.ContainsKey(value.Id) ? this.answers[value.Id] : string.Empty;
                     }
 
-                    this.DisplayAdditionalQuestion();
+                    // this.DisplayAdditionalQuestion();
                 }
 
                 this.NextQuestionCommand?.RaiseCanExecuteChanged();
@@ -1220,7 +1220,7 @@
 
             this.Grades = this.dataManager.GetGrades();
             var gradeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedGrade");
-            this.SelectedGrade = int.TryParse(gradeFromSettings, out int grade) ? grade : this.Grades.FirstOrDefault();
+            this.SelectedGrade = int.TryParse(gradeFromSettings, out int grade) && this.Grades.Contains(grade) ? grade : this.Grades.FirstOrDefault();
 
             if (this.SelectedGrade > 0)
             {
@@ -1288,16 +1288,16 @@
         /// </summary>
         private void DisplayAdditionalQuestion()
         {
-            if (!string.IsNullOrWhiteSpace(this.SelectedQuestion?.AdditionalImage) && this.QuestionImage != null)
-            {
-                var directory = Path.GetDirectoryName(this.QuestionImage);
-                this.floatingQuestionViewModel.QuestionImage = Path.Combine(directory, this.SelectedQuestion.AdditionalImage);
-                //this.WindowService.Show("FloatingQuestionView", this.floatingQuestionViewModel);
-            }
-            else
-            {
-                // this.WindowService.Close();
-            }
+            //if (!string.IsNullOrWhiteSpace(this.SelectedQuestion?.AdditionalImage) && this.QuestionImage != null)
+            //{
+            //    var directory = Path.GetDirectoryName(this.QuestionImage);
+            //    this.floatingQuestionViewModel.QuestionImage = Path.Combine(directory, this.SelectedQuestion.AdditionalImage);
+            //    //this.WindowService.Show("FloatingQuestionView", this.floatingQuestionViewModel);
+            //}
+            //else
+            //{
+            //    // this.WindowService.Close();
+            //}
         }
 
         /// <summary>
