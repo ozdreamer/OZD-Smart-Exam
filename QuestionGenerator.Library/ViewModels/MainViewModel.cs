@@ -11,9 +11,6 @@
     using System.Windows.Threading;
 
     using Caliburn.Micro;
-    using DevExpress.Mvvm;
-    using DevExpress.Mvvm.POCO;
-    using DevExpress.Mvvm.UI;
     using DevExpress.Xpf.Core;
     using QuestionGenerator.Library.Data;
     using QuestionGenerator.Library.DataModels;
@@ -1216,21 +1213,28 @@
                 return;
             }
 
-            this.dataManager.Initialize();
-
-            this.Grades = this.dataManager.GetGrades();
-            var gradeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedGrade");
-            this.SelectedGrade = int.TryParse(gradeFromSettings, out int grade) && this.Grades.Contains(grade) ? grade : this.Grades.FirstOrDefault();
-
-            if (this.SelectedGrade > 0)
+            try
             {
-                this.ExamTypes = this.dataManager.GetAllExamTypes(this.SelectedGrade);
-                var examTypeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedExamType");
-                this.SelectedExamType = int.TryParse(examTypeFromSettings, out int examTypeId) ? this.ExamTypes.FirstOrDefault(x => x.Id == examTypeId) : this.ExamTypes.FirstOrDefault();
+                this.dataManager.Initialize();
 
-                this.Subjects = this.dataManager.GetAllSubjects(this.SelectedGrade);
-                var subjectFromSettings = SettingsManager.GetValueFromAppSettings("SelectedSubject");
-                this.SelectedSubject = int.TryParse(subjectFromSettings, out int subject) ? this.Subjects.FirstOrDefault(x => x.Id == subject) : this.Subjects.FirstOrDefault();
+                this.Grades = this.dataManager.GetGrades();
+                var gradeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedGrade");
+                this.SelectedGrade = int.TryParse(gradeFromSettings, out int grade) && this.Grades.Contains(grade) ? grade : this.Grades.FirstOrDefault();
+
+                if (this.SelectedGrade > 0)
+                {
+                    this.ExamTypes = this.dataManager.GetAllExamTypes(this.SelectedGrade);
+                    var examTypeFromSettings = SettingsManager.GetValueFromAppSettings("SelectedExamType");
+                    this.SelectedExamType = int.TryParse(examTypeFromSettings, out int examTypeId) ? this.ExamTypes.FirstOrDefault(x => x.Id == examTypeId) : this.ExamTypes.FirstOrDefault();
+
+                    this.Subjects = this.dataManager.GetAllSubjects(this.SelectedGrade);
+                    var subjectFromSettings = SettingsManager.GetValueFromAppSettings("SelectedSubject");
+                    this.SelectedSubject = int.TryParse(subjectFromSettings, out int subject) ? this.Subjects.FirstOrDefault(x => x.Id == subject) : this.Subjects.FirstOrDefault();
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                this.MessageService.ShowDialog("Error", ex.Message);
             }
         }
 
