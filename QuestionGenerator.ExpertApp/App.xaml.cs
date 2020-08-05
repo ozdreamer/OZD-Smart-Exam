@@ -41,16 +41,13 @@
 
             var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var directory = new DirectoryInfo(assemblyPath);
-            var files = directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
+            var files = directory.GetFiles("*QuestionGenerator*.dll", SearchOption.TopDirectoryOnly);
 
             foreach (var file in files)
             {
                 var assemblyName = AssemblyName.GetAssemblyName(file.FullName);
-                if (assemblyName.FullName.StartsWith("QuestionGenerator"))
-                {
-                    var assembly = AppDomain.CurrentDomain.Load(assemblyName);
-                    builder.RegisterAssemblyModules(assembly);
-                }
+                var assembly = AppDomain.CurrentDomain.Load(assemblyName);
+                builder.RegisterAssemblyModules(assembly);
             }
 
             return builder.Build(ContainerBuildOptions.None);

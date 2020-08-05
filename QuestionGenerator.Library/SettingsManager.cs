@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Configuration;
 using System.Linq;
 
 namespace QuestionGenerator.Library
