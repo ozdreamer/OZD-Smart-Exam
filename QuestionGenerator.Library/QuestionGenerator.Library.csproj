@@ -113,7 +113,6 @@
     <Compile Include="Resources\Converters\OperatingModeToVisibilityConverter.cs" />
     <Compile Include="Resources\Converters\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="SettingsManager.cs" />
-    <Compile Include="ViewModels\FloatingQuestionViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

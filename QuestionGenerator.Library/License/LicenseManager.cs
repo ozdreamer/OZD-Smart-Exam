@@ -36,7 +36,7 @@
         /// </exception>
         public static bool IsLicenseValid(out LicenseInfo returnLicenseInfo)
         {
-            var licenseFile = ConfigurationManager.AppSettings["LicenseFile"].ToString();
+            var licenseFile = Path.GetFullPath(ConfigurationManager.AppSettings["LicenseFile"].ToString());
             if (!File.Exists(licenseFile))
             {
                 throw new FileNotFoundException();

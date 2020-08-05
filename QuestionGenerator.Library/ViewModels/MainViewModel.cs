@@ -42,11 +42,6 @@
         /// </summary>
         private readonly IMessageService messageService;
 
-        /// <summary>
-        /// The floating question view model
-        /// </summary>
-        private FloatingQuestionViewModel floatingQuestionViewModel;
-
         #endregion
 
         /// <summary>
@@ -1178,7 +1173,6 @@
         {
             //this.messageService = messageService;
             this.dataManager = new DataManager();
-            this.floatingQuestionViewModel = new FloatingQuestionViewModel();
 
             this.StartTestCommand = new DelegateCommand(this.StartTestCommandExecute, this.StartTestCommandCanExecute);
             this.NextQuestionCommand = new DelegateCommand(this.NextQuestionCommandExecute, this.NextQuestionCommandCanExecute);
@@ -1285,23 +1279,6 @@
 
                     return r;
                 });
-        }
-
-        /// <summary>
-        /// Displays the additional question.
-        /// </summary>
-        private void DisplayAdditionalQuestion()
-        {
-            //if (!string.IsNullOrWhiteSpace(this.SelectedQuestion?.AdditionalImage) && this.QuestionImage != null)
-            //{
-            //    var directory = Path.GetDirectoryName(this.QuestionImage);
-            //    this.floatingQuestionViewModel.QuestionImage = Path.Combine(directory, this.SelectedQuestion.AdditionalImage);
-            //    //this.WindowService.Show("FloatingQuestionView", this.floatingQuestionViewModel);
-            //}
-            //else
-            //{
-            //    // this.WindowService.Close();
-            //}
         }
 
         /// <summary>
