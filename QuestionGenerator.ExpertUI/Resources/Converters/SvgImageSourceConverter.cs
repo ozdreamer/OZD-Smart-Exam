@@ -15,7 +15,7 @@
     /// </summary>
     /// <seealso cref="System.Windows.Markup.MarkupExtension" />
     /// <seealso cref="System.Windows.Data.IValueConverter" />
-    public class SvgImageSourceConverterExtension : MarkupExtension, IValueConverter
+    public class SvgImageSourceConverter : MarkupExtension, IValueConverter
     {
         /// <summary>
         /// The base URI
@@ -28,15 +28,15 @@
         private readonly UriTypeConverter uriConverter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgImageSourceConverterExtension"/> class.
+        /// Initializes a new instance of the <see cref="SvgImageSourceConverter"/> class.
         /// </summary>
-        public SvgImageSourceConverterExtension() : this(null) { }
+        public SvgImageSourceConverter() : this(null) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgImageSourceConverterExtension"/> class.
+        /// Initializes a new instance of the <see cref="SvgImageSourceConverter"/> class.
         /// </summary>
         /// <param name="baseUri">The base URI.</param>
-        public SvgImageSourceConverterExtension(Uri baseUri)
+        public SvgImageSourceConverter(Uri baseUri)
         {
             this.baseUri = baseUri;
             uriConverter = new UriTypeConverter();
@@ -61,7 +61,7 @@
         /// </returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return new SvgImageSourceConverterExtension((serviceProvider.GetService(typeof(IUriContext)) as IUriContext).BaseUri);
+            return new SvgImageSourceConverter((serviceProvider.GetService(typeof(IUriContext)) as IUriContext).BaseUri);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@
             var uri = uriConverter.ConvertFrom(value) as Uri;
             if (uri == null)
             {
-                return null;
+                return DependencyProperty.UnsetValue;
             }
 
             var absoluteUri = uri.IsAbsoluteUri ? uri : new Uri(baseUri, uri);
@@ -103,7 +103,7 @@
         /// <exception cref="NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return Binding.DoNothing;
         }
     }
 }

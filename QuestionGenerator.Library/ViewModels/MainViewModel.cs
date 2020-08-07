@@ -37,11 +37,6 @@
         /// </summary>
         private readonly string imageDirectory;
 
-        /// <summary>
-        /// The message service
-        /// </summary>
-        private readonly IMessageService messageService;
-
         #endregion
 
         /// <summary>
@@ -1197,6 +1192,7 @@
         public void Load()
         {
             //LicenseManager.TempWriteLicenseFile();
+
             try
             {
                 this.IsLicenseValid = LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);

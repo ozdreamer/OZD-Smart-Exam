@@ -39,7 +39,7 @@
             var licenseFile = Path.GetFullPath(ConfigurationManager.AppSettings["LicenseFile"].ToString());
             if (!File.Exists(licenseFile))
             {
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("LIcense file not found");
             }
 
             using (var stream = File.Open(Path.GetFullPath(licenseFile), FileMode.OpenOrCreate, FileAccess.ReadWrite))
@@ -48,20 +48,20 @@
                 var rawObject = formatter.Deserialize(stream);
                 if (!(rawObject is LicenseInfo licenseInfo))
                 {
-                    throw new InvalidDataException();
+                    throw new InvalidDataException("Incorrect license found");
                 }
 
                 returnLicenseInfo = licenseInfo;
                 var validDays = (licenseInfo.Expiry - DateTime.UtcNow.Date).TotalDays;
                 if (validDays < 0)
                 {
-                    return false;
+                    throw new InvalidDataException("License has been expired");
                 }
 
                 var serialKey = GetDiskSerialKey();
                 if (serialKey == null)
                 {
-                    throw new InvalidDataException();
+                    throw new InvalidDataException("License is not valid for this machine");
                 }
 
                 if (string.IsNullOrWhiteSpace(licenseInfo.MachineId))
@@ -91,7 +91,7 @@
                 var formatter = new BinaryFormatter();
                 var licenseInfo = new LicenseInfo
                 {
-                    Expiry = new DateTime(2020, 12, 31),
+                    Expiry = new DateTime(2050, 12, 31),
                     Key = Guid.NewGuid().ToString(),
                     MachineId = null,
                     Version = "1.0",

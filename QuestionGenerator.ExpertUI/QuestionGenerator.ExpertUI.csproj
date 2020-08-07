@@ -162,7 +162,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="MessageService.cs" />
-    <Compile Include="Resources\Converters\SvgImageSourceConverterExtension.cs" />
+    <Compile Include="Resources\Converters\SvgImageSourceConverter.cs" />
     <Compile Include="Views\DXSplashScreen\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
