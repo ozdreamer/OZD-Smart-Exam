@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
+    <dx:SvgImageSource x:Key="NextSvg" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/Next.svg"/>
+    <dx:SvgImageSource x:Key="PrevSvg" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/Prev.svg"/>
+    <dx:SvgImageSource x:Key="StopSvg" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/Stop.svg"/>
+    <dx:SvgImageSource x:Key="PauseSvg" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/Pause.svg"/>
+    <dx:SvgImageSource x:Key="PlaySvg" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/Play.svg"/>
+    <dx:SvgImageSource x:Key="LetterASvgBlue" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/A-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterBSvgBlue" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/B-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterCSvgBlue" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/C-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterDSvgBlue" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/D-Blue.svg"/>
+    <dx:SvgImageSource x:Key="LetterASvgGreen" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/A-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterBSvgGreen" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/B-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterCSvgGreen" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/C-Green.svg"/>
+    <dx:SvgImageSource x:Key="LetterDSvgGreen" Uri="pack://application:,,,/OZD.SmartExam.UI;component/Resources/Images/D-Green.svg"/>
+</ResourceDictionary>

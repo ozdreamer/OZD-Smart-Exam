@@ -1,0 +1,161 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:library="clr-namespace:OZD.SmartExam.Library;assembly=OZD.SmartExam.Library">
+    
+    <Style TargetType="{x:Type FrameworkElement}" x:Key="ReviewVisibleOnlyStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.Review}">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.None}">
+                <Setter Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.Test}">
+                <Setter Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type FrameworkElement}" x:Key="TestVisibleOnlyStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.Test}">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.None}">
+                <Setter Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding OperatingMode}" Value="{x:Static library:OperatingMode.Review}">
+                <Setter Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type Label}" x:Key="LabelInGridStyle">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Navy"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+    <Style TargetType="{x:Type dx:SimpleButton}" x:Key="ButtonInGridStyle">
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Height" Value="27"/>
+        <Setter Property="Width" Value="75"/>
+    </Style>
+    <Style TargetType="{x:Type dxe:TextEdit}" x:Key="TextInGridStyle">
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Height" Value="27"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+    <Style TargetType="{x:Type Grid}" x:Key="GridInGroupStyle">
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+    <Style TargetType="{x:Type GroupBox}" x:Key="MainGroupBoxStyle">
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Padding" Value="3"/>
+    </Style>
+    <Style TargetType="{x:Type dx:SimpleButton}" x:Key="AnswerButtonStyle">
+        <Setter Property="Height" Value="130"/>
+        <Setter Property="Width" Value="130"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="FontSize" Value="72"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="{x:Type dx:SimpleButton}" x:Key="NavigateButtonStyle" BasedOn="{StaticResource TestVisibleOnlyStyle}">
+        <Setter Property="Height" Value="75"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Navy"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+    </Style>
+    <Style TargetType="{x:Type dx:SimpleButton}" x:Key="OperationButton" BasedOn="{StaticResource TestVisibleOnlyStyle}">
+        <Setter Property="Height" Value="75"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="BorderBrush" Value="DarkGreen"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="ResultTextStyle">
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="FontSize" Value="56"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="{x:Type TextBlock}" x:Key="PieHoleTextStyle" BasedOn="{StaticResource ResultTextStyle}">
+        <Setter Property="FontSize" Value="96"/>
+        <Setter Property="Foreground" Value="DarkGreen" />
+    </Style>
+    <Style TargetType="dxg:GridColumn">
+        <Setter Property="HeaderStyle">
+            <Setter.Value>
+                <Style TargetType="dxg:BaseGridHeader">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type dxg:RowControl}" x:Key="ReviewGridRowStyle">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Row.IsCorrect}" Value="False">
+                <Setter Property="Background" Value="LightPink" />
+                <Setter Property="FontWeight" Value="Bold"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Row.IsCorrect}" Value="True">
+                <Setter Property="Background" Value="LightGreen" />
+                <Setter Property="FontWeight" Value="Regular"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Row.IsNotAnswered}" Value="True">
+                <Setter Property="Background" Value="Silver" />
+                <Setter Property="FontWeight" Value="Regular"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                <Setter Property="Background" Value="AliceBlue" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </DataTrigger>
+
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type Ellipse}" x:Key="IndicatorEllipseStyle">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Margin" Value="5,0,5,0"/>
+    </Style>
+    <Style TargetType="{x:Type Ellipse}" x:Key="DifficultyLevelIndicatorStyle" BasedOn="{StaticResource IndicatorEllipseStyle}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                <Setter Property="Fill" Value="LightGray"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="{x:Static library:DifficultyLevel.Easy}">
+                <Setter Property="Fill" Value="Green"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="{x:Static library:DifficultyLevel.Medium}">
+                <Setter Property="Fill" Value="Orange"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="{x:Static library:DifficultyLevel.Hard}">
+                <Setter Property="Fill" Value="DodgerBlue"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="{x:Static library:DifficultyLevel.Complex}">
+                <Setter Property="Fill" Value="Red"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding}" Value="{x:Static library:DifficultyLevel.Impossible}">
+                <Setter Property="Fill" Value="DarkRed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
