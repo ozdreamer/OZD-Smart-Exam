@@ -37,6 +37,11 @@
         /// </summary>
         private readonly string imageDirectory;
 
+        /// <summary>
+        /// The window manager
+        /// </summary>
+        private IWindowManager windowManger;
+
         #endregion
 
         /// <summary>
@@ -1167,6 +1172,7 @@
         public MainViewModel()
         {
             this.dataManager = new DataManager();
+            this.windowManger = new WindowManager();
 
             this.StartTestCommand = new DelegateCommand(this.StartTestCommandExecute, this.StartTestCommandCanExecute);
             this.NextQuestionCommand = new DelegateCommand(this.NextQuestionCommandExecute, this.NextQuestionCommandCanExecute);
@@ -1191,14 +1197,24 @@
         public void Load()
         {
             //LicenseManager.WriteLicenseFile(LicenseManager.GetDiskSerialKey(), new DateTime(2020, 9, 5));
+            LicenseInfo licenseInfo = null;
             try
             {
-                this.IsLicenseValid = LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);
+                this.IsLicenseValid = LicenseManager.IsLicenseValid(out licenseInfo);
             }
             catch (LicenseException ex)
             {
                 DXSplashScreen.Close();
-                DXMessageBox.Show(caption: "License Error", messageBoxText: ex.Message, button: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+
+                if (ex.ErrorCode == LicenseErrorCode.NotFound)
+                {
+                    this.windowManger.ShowDialog(new LicenseRequestViewModel { MachineId = licenseInfo.MachineId });
+                }
+                else
+                {
+                    DXMessageBox.Show(caption: "License Error", messageBoxText: ex.Message, button: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                }
+
                 Application.Current.Shutdown();
             }
 

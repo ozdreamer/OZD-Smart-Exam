@@ -115,6 +115,7 @@
     <Compile Include="Resources\Converters\OperatingModeToVisibilityConverter.cs" />
     <Compile Include="Resources\Converters\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="SettingsManager.cs" />
+    <Compile Include="ViewModels\LicenseRequestViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

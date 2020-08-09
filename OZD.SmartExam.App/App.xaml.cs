@@ -1,8 +1,10 @@
 ﻿namespace OZD.SmartExam
 {
+    using Caliburn.Micro;
     using DevExpress.LookAndFeel;
     using DevExpress.Skins;
     using DevExpress.Xpf.Core;
+    using OZD.SmartExam.Library.ViewModels;
     using OZD.SmartExam.UI.Views;
     using System;
     using System.Reflection;
@@ -22,13 +24,28 @@
         {
             base.OnStartup(e);
 
+            SetupLocators();
             SetupExceptionHandling();
 
             SkinManager.EnableFormSkins();
             UserLookAndFeel.Default.SetStyle(LookAndFeelStyle.Skin, false, false);
-
-            new MainView().Show();
         }
+
+        /// <summary>
+        /// Setup the caliburn.micro view and vm locators.
+        /// </summary>
+        private void SetupLocators()
+        {
+            var config = new TypeMappingConfiguration
+            {
+                DefaultSubNamespaceForViews = $"{typeof(MainView).GetTypeInfo().Assembly.GetAssemblyName()}.Views",
+                DefaultSubNamespaceForViewModels = $"{typeof(MainViewModel).GetTypeInfo().Assembly.GetAssemblyName()}.ViewModels"
+            };
+
+            ViewLocator.ConfigureTypeMappings(config);
+            ViewModelLocator.ConfigureTypeMappings(config);
+        }
+
         /// <summary>
         /// Setupt the unhandled exceptions.
         /// </summary>
@@ -57,16 +74,9 @@
         /// <param name="source">Source where the exception was generated from</param>
         private void LogUnhandledException(Exception exception, string source)
         {
-            try
-            {
-                AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
-                var message = string.Format($"Unhandled exception in {assemblyName.Name} v{assemblyName.Version} - {exception.Message}");
-                DXMessageBox.Show(message, "Unhandled Exception");
-            }
-            catch (Exception ex)
-            {
-                //DXMessageBox.Show(ex.Message, "Unhandled Exception");
-            }
+            AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+            var message = string.Format($"Unhandled exception in {assemblyName.Name} v{assemblyName.Version} - {exception.Message}");
+            DXMessageBox.Show(message, "Unhandled Exception");
         }
     }
 }
