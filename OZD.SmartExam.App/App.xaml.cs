@@ -24,26 +24,10 @@
         {
             base.OnStartup(e);
 
-            SetupLocators();
             SetupExceptionHandling();
 
             SkinManager.EnableFormSkins();
             UserLookAndFeel.Default.SetStyle(LookAndFeelStyle.Skin, false, false);
-        }
-
-        /// <summary>
-        /// Setup the caliburn.micro view and vm locators.
-        /// </summary>
-        private void SetupLocators()
-        {
-            var config = new TypeMappingConfiguration
-            {
-                DefaultSubNamespaceForViews = $"{typeof(MainView).GetTypeInfo().Assembly.GetAssemblyName()}.Views",
-                DefaultSubNamespaceForViewModels = $"{typeof(MainViewModel).GetTypeInfo().Assembly.GetAssemblyName()}.ViewModels"
-            };
-
-            ViewLocator.ConfigureTypeMappings(config);
-            ViewModelLocator.ConfigureTypeMappings(config);
         }
 
         /// <summary>

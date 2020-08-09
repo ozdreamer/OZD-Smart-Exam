@@ -15,6 +15,12 @@ namespace OZD.SmartExam
             Initialize();
         }
 
+        protected override void Configure()
+        {
+            base.Configure();
+            ViewLocator.AddNamespaceMapping($"{typeof(MainViewModel).GetTypeInfo().Assembly.GetAssemblyName()}.ViewModels", $"{typeof(MainView).GetTypeInfo().Assembly.GetAssemblyName()}.Views");
+        }
+
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             DisplayRootViewFor<MainViewModel>();
@@ -24,7 +30,6 @@ namespace OZD.SmartExam
         {
             var assemblies = base.SelectAssemblies().ToList();
             assemblies.Add(typeof(MainView).GetTypeInfo().Assembly);
-            assemblies.Add(typeof(MainViewModel).GetTypeInfo().Assembly);
             return assemblies;
         }
     }
