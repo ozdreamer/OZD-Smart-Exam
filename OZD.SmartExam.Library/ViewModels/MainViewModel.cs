@@ -1196,7 +1196,7 @@
         /// </summary>
         public void Load()
         {
-            //LicenseManager.WriteLicenseFile(LicenseManager.GetDiskSerialKey(), new DateTime(2020, 9, 5));
+            //LicenseManager.WriteLicenseFile("S3TZNX0M311234", new DateTime(2021, 9, 5));
             LicenseInfo licenseInfo = null;
             try
             {
@@ -1208,14 +1208,20 @@
 
                 if (ex.ErrorCode == LicenseErrorCode.NotFound)
                 {
-                    this.windowManger.ShowDialog(new LicenseRequestViewModel { MachineId = licenseInfo.MachineId });
+                    var dialogSettings = new Dictionary<string, object>
+                    {
+                        { "Title", "Machine ID" }
+                    };
+
+                    this.windowManger.ShowDialog(new LicenseRequestViewModel { MachineId = LicenseManager.GetDiskSerialKey() }, settings: dialogSettings);
                 }
                 else
                 {
-                    DXMessageBox.Show(caption: "License Error", messageBoxText: ex.Message, button: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    ShowMessageBox("License Error", ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 Application.Current.Shutdown();
+                return;
             }
 
             try
@@ -1237,9 +1243,10 @@
                     this.SelectedSubject = int.TryParse(subjectFromSettings, out int subject) ? this.Subjects.FirstOrDefault(x => x.Id == subject) : this.Subjects.FirstOrDefault();
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (Exception ex)
             {
-                DXMessageBox.Show(messageBoxText: ex.Message, caption: "Error");
+                ShowMessageBox(ex.Message, "Error", icon: MessageBoxImage.Error);
+                Application.Current.Shutdown();
             }
         }
 
@@ -1711,7 +1718,7 @@
         /// <param name="param">The parameter.</param>
         private void FinishTestCommandExecute(object param)
         {
-            if (DXMessageBox.Show($"Are you sure your want to finish the test?", "Finish", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (ShowMessageBox($"Are you sure your want to finish the test?", "Finish", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 this.CurrentTest.EndDate = DateTime.Today;
                 this.CurrentTest.EndTime = DateTime.Now.TimeOfDay;
@@ -1810,7 +1817,7 @@
             var index = this.SelectedIncompleteTest.LastIndex + 1;
             if (index >= this.SelectedIncompleteTest.TotalQuestions)
             {
-                DXMessageBox.Show("You have no more question to answer.", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowMessageBox("You have no more question to answer.", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.ReviewTestCommand?.Execute(null);
                 return;
             }
@@ -2000,7 +2007,7 @@
         {
             if (param is Test testToDelete)
             {
-                if (DXMessageBox.Show("Are you sure you want to delete this test?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (ShowMessageBox("Are you sure you want to delete this test?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     this.dataManager.DeleteTest(testToDelete.Id);
                     this.LoadTests();
@@ -2014,5 +2021,15 @@
         /// <param name="param">The parameter.</param>
         /// <returns></returns>
         private bool DeleteTestCommandCanExecute(object param) => true;
+
+        private static MessageBoxResult ShowMessageBox(string message, string title, MessageBoxButton button = MessageBoxButton.OK, MessageBoxImage icon = MessageBoxImage.Information)
+        {
+            if (DXSplashScreen.IsActive)
+            {
+                DXSplashScreen.Close();
+            }
+
+            return DXMessageBox.Show(message, title, button, icon);
+        }
     }
 }

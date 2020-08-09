@@ -18,7 +18,7 @@
             {
                 if (searcher.Get().OfType<ManagementObject>().FirstOrDefault() is ManagementObject mo)
                 {
-                    return mo["SerialNumber"].ToString();
+                    return mo["SerialNumber"].ToString().Trim();
                 }
 
                 return null;
@@ -101,7 +101,13 @@
         public static void WriteLicenseFile(string machineId, DateTime expiry)
         {
             var licenseFile = ConfigurationManager.AppSettings["LicenseFile"].ToString();
-            using (var stream = File.Open(Path.GetFullPath(licenseFile), FileMode.Create, FileAccess.ReadWrite))
+            var directory = Path.GetDirectoryName(licenseFile);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            using (var stream = File.Open(licenseFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 var formatter = new BinaryFormatter();
                 var licenseInfo = new LicenseInfo

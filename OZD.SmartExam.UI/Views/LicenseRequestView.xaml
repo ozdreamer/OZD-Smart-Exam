@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-             xmlns:local="clr-namespace:OZD.SmartExam.UI.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             Width="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,17 +14,19 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Label Content="Copy the following code and email to ozdreamer.it@gmail.com with your proof of purchase" Grid.ColumnSpan="2" />
-        <dxe:TextEdit EditValue="{Binding MachineId}" Grid.Row="1" />
-        <dx:SimpleButton Content="Copy" Command="{Binding CopyMachineIdCommand}" Width="25" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Margin="3" Grid.ColumnSpan="2">
+            Copy the following code and email to ozdreamer.it@gmail.com with your proof of purchase to obtain a linense
+        </TextBlock>
+        <dxe:TextEdit EditValue="{Binding MachineId}" HorizontalContentAlignment="Center" Width="Auto" Margin="3" Grid.Row="1"/>
+        <dx:SimpleButton Content="Copy" Command="{Binding CopyMachineIdCommand}" Width="50" Margin="3" Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </UserControl>

@@ -46,6 +46,12 @@
                 throw new InvalidOperationException("Connection string for the Test database not found.");
             }
 
+            var filePath = Regex.Replace(testConnectionString.ConnectionString.Trim(), "[D|d]ata [S|s]ource=*", string.Empty);
+            if (!File.Exists(Path.GetFullPath(filePath)))
+            {
+                throw new FileNotFoundException("Test database not found.");
+            }
+
             this.testConnection = new SQLiteConnection(testConnectionString.ConnectionString);
             this.testConnection.Open();
 
@@ -54,7 +60,7 @@
                 var tokens = connectionString.Name.Split('.');
                 if (tokens.Length == 2 && int.TryParse(tokens[1], out int grade))
                 {
-                    var filePath = Regex.Replace(connectionString.ConnectionString.Trim(), "[D|d]ata [S|s]ource=*", string.Empty);
+                    filePath = Regex.Replace(connectionString.ConnectionString.Trim(), "[D|d]ata [S|s]ource=*", string.Empty);
                     if (File.Exists(Path.GetFullPath(filePath)))
                     {
                         this.connections[grade] = new SQLiteConnection($"{connectionString.ConnectionString}");
