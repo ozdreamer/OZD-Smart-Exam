@@ -15,6 +15,11 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OZD.SmartExam.Setup", "OZD.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OZD.SmartExam.Test", "OZD.SmartExam.Test\OZD.SmartExam.Test.csproj", "{B60DF5C5-CA2C-4E88-BD66-42040E434640}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9CAFC11-2FF9-4221-B25D-C7A3D092E77E}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

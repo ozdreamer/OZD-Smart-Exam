@@ -60,7 +60,7 @@
         {
             AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
             var message = string.Format($"Unhandled exception in {assemblyName.Name} v{assemblyName.Version} - {exception.Message}");
-            DXMessageBox.Show(message, "Unhandled Exception");
+            //DXMessageBox.Show(message, "Unhandled Exception");
         }
     }
 }

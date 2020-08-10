@@ -165,6 +165,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="MessageService.cs" />
     <Compile Include="Resources\Converters\SvgImageSourceConverter.cs" />
     <Compile Include="Views\DXSplashScreen\SplashScreenView.xaml.cs">
@@ -224,12 +227,6 @@
     <Resource Include="Resources\Images\B-Blue.svg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OZD.SmartExam.Library\OZD.SmartExam.Library.csproj">
-      <Project>{03c5835b-c352-47f6-a552-f3c315ee6a95}</Project>
-      <Name>OZD.SmartExam.Library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <SplashScreen Include="Resources\Images\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +247,11 @@
   <ItemGroup>
     <Resource Include="Resources\Images\D-Green.svg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\OZD.SmartExam.Library\OZD.SmartExam.Library.csproj">
+      <Project>{03c5835b-c352-47f6-a552-f3c315ee6a95}</Project>
+      <Name>OZD.SmartExam.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
