@@ -22,7 +22,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Image x:Name="Image" Source="Banner.jpg" Stretch="Uniform"/>
-                <TextBlock x:Name="Info" TextWrapping="Wrap" Text="OZD Smart Test" Grid.Row="1" Margin="12,12,12,0" Foreground="Navy" FontWeight="Bold" FontSize="20"/>
+                <TextBlock x:Name="Info" TextWrapping="Wrap" Text="OZD Smart Exam" Grid.Row="1" Margin="12" Foreground="Navy" FontWeight="Bold" FontSize="20"/>
                 <ProgressBar x:Name="progressBar"
                              Height="12"
                              Grid.Row="2"

@@ -100,8 +100,18 @@
         /// <param name="expiry">Expiry date.</param>
         public static void WriteLicenseFile(string machineId, DateTime expiry)
         {
-            var licenseFile = ConfigurationManager.AppSettings["LicenseFile"].ToString();
-            var directory = Path.GetDirectoryName(licenseFile);
+            WriteLicenseFile(ConfigurationManager.AppSettings["LicenseFile"].ToString(), machineId, expiry);
+        }
+
+        /// <summary>
+        /// Writes the license file based on the machine id and expiry date.
+        /// </summary>
+        /// <param name="licenseFile">The license file.</param>
+        /// <param name="machineId">The machine identifier.</param>
+        /// <param name="expiry">Expiry date.</param>
+        public static void WriteLicenseFile(string licenseFile, string machineId, DateTime expiry)
+        {
+            var directory = Path.GetDirectoryName(Path.GetFullPath(licenseFile));
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);

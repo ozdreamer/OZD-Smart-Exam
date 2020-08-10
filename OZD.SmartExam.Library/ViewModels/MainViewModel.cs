@@ -1196,7 +1196,6 @@
         /// </summary>
         public void Load()
         {
-            //LicenseManager.WriteLicenseFile("0000_0000_0100_0000_E4D2_5C84_C099_5001.", new DateTime(2021, 9, 5));
             LicenseInfo licenseInfo = null;
             try
             {

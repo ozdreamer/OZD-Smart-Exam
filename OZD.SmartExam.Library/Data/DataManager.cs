@@ -1,4 +1,5 @@
-﻿namespace OZD.SmartExam.Library.Data
+﻿
+namespace OZD.SmartExam.Library.Data
 {
     using System;
     using System.Collections.Generic;
@@ -402,7 +403,6 @@
                 Answer = Convert.ToString(reader[nameof(Question.Answer)]),
                 Category = Convert.ToInt32(reader[nameof(Question.Category)]),
                 Level = (DifficultyLevel)Convert.ToInt32(reader[nameof(Question.Level)]),
-                // AdditionalImage = Convert.ToString(reader[nameof(Question.AdditionalImage)]),
             };
         }
 

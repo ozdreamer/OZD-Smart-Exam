@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OZD.SmartExam.App", "OZD.Sm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OZD.SmartExam.Library", "OZD.SmartExam.Library\OZD.SmartExam.Library.csproj", "{03C5835B-C352-47F6-A552-F3C315EE6A95}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3B4C19C9-5891-4D3B-AA58-3E05E447141A}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OZD.SmartExam.Setup", "OZD.SmartExam.Setup\OZD.SmartExam.Setup.vdproj", "{8AD98CCB-B180-4729-A232-5D3E45023A0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OZD.SmartExam.Test", "OZD.SmartExam.Test\OZD.SmartExam.Test.csproj", "{B60DF5C5-CA2C-4E88-BD66-42040E434640}"
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OZD.SmartExam.LicenseMaker", "OZD.SmartExam.LicenseMaker\OZD.SmartExam.LicenseMaker.csproj", "{C9D54442-099A-4504-8027-761D51059A77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,13 +85,21 @@ Global
 		{B60DF5C5-CA2C-4E88-BD66-42040E434640}.Release|x64.Build.0 = Release|Any CPU
 		{B60DF5C5-CA2C-4E88-BD66-42040E434640}.Release|x86.ActiveCfg = Release|Any CPU
 		{B60DF5C5-CA2C-4E88-BD66-42040E434640}.Release|x86.Build.0 = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|x64.Build.0 = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Debug|x86.Build.0 = Debug|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|x64.ActiveCfg = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|x64.Build.0 = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9D54442-099A-4504-8027-761D51059A77}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A78EB119-F640-49D0-90C7-B210E6BD8C45} = {3B4C19C9-5891-4D3B-AA58-3E05E447141A}
-		{743425B4-0F5B-4B4F-89D1-C846653472B3} = {3B4C19C9-5891-4D3B-AA58-3E05E447141A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8517FD45-2FC2-4C65-BFFA-1425650846F3}
