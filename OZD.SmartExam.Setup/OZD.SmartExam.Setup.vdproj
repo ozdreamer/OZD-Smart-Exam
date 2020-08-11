@@ -1787,7 +1787,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\OZD Smart Exam.msi"
+        "OutputFilename" = "8:Release\\OZD.SmartExam.Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -2660,7 +2660,7 @@
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -4003,7 +4003,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.Library, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.Library, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_BAB45695F4695D1FE955223E0988E77B"
@@ -4065,7 +4065,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.UI, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.UI, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_C38D0867AEFA9ACC573B940D0F1AAD2A"
@@ -4794,6 +4794,17 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_16DD047F90954FB59A547EB4294FA17D"
+                    {
+                    "Name" = "8:OzDreamer IT Solutions"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_A0C2965AAFEA4AFBB2441624A9C5F8D9"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_9CBF7D8038D54089A44149C08E18EF59"
@@ -4823,15 +4834,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OZD Smart Exam"
-        "ProductCode" = "8:{527C8B3A-6F7E-44DF-9C7F-49AC62996427}"
-        "PackageCode" = "8:{ADAE53CD-B7E9-4C0B-93EC-5B30D7537BD9}"
+        "ProductCode" = "8:{D461126A-1B6A-4F3A-9721-B8453D2EC2EE}"
+        "PackageCode" = "8:{8DC6D73F-0910-4781-8C45-6EC0F9B5AA74}"
         "UpgradeCode" = "8:{08278088-E50F-4FF6-9EBE-409193F91943}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:OzDreamer IT Solutions"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -4847,7 +4858,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:findstr /v PostBuildEvent \"$(ProjectDir)OZD.SmartExam.Setup.vdproj\" | findstr ProductVersion >\"%TEMP%\\version.txt\"\r\nset /p var=<\"%TEMP%\\version.txt\"\r\nset var=%var:\"=%\r\nset var=%var: =%\r\nfor /f \"tokens=1,2 delims=:\" %%i in (\"%var%\") do @echo %%j>\"%TEMP%\\version.txt\"\r\nset /p realvar=<\"%TEMP%\\version.txt\"\r\nrename \"$(BuiltOuputPath)\" \"OZDSMEX v%realvar%.msi\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -4967,7 +4978,7 @@
             "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
             "Target" = "8:_24D33C5763754B9DA172B49940A4F0BE"
-            "Folder" = "8:_919FFFCE0CDA4B18895B1F7B90A21142"
+            "Folder" = "8:_16DD047F90954FB59A547EB4294FA17D"
             "WorkingFolder" = "8:_10787DF84248474DBC10A360A7E69471"
             "Icon" = "8:_24D33C5763754B9DA172B49940A4F0BE"
             "Feature" = "8:"
