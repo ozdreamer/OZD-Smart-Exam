@@ -4003,7 +4003,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.Library, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.Library, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_BAB45695F4695D1FE955223E0988E77B"
@@ -4065,7 +4065,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.UI, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:OZD.SmartExam.UI, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_C38D0867AEFA9ACC573B940D0F1AAD2A"
@@ -4834,15 +4834,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OZD Smart Exam"
-        "ProductCode" = "8:{D461126A-1B6A-4F3A-9721-B8453D2EC2EE}"
-        "PackageCode" = "8:{8DC6D73F-0910-4781-8C45-6EC0F9B5AA74}"
+        "ProductCode" = "8:{FD79247A-5943-4951-A034-937C1E85520C}"
+        "PackageCode" = "8:{E134242E-C628-46F9-9C5F-974BF708AAA7}"
         "UpgradeCode" = "8:{08278088-E50F-4FF6-9EBE-409193F91943}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.1.0"
         "Manufacturer" = "8:OzDreamer IT Solutions"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
