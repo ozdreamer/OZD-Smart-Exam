@@ -22,7 +22,7 @@
     WindowState="Maximized"
     WindowStyle="SingleBorderWindow"
     Focusable="False"
-    Title="ICAS Test Suite"
+    Title="{Binding WindowTitle}"
     Loaded="OnLoaded"
     KeyUp="OnKeyUp"
     Closed="OnClosed">

@@ -5,6 +5,7 @@
     using System.Configuration;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -76,6 +77,19 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the SelectedSkin.
+        /// </summary>
+        /// <value>The SelectedSkin.</value>
+        public string WindowTitle
+        {
+            get
+            {
+                var product = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product;
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                return $"{product} v{version.Major}.{version.Minor}";
+            }
+        }
 
         /// <summary>
         /// Stores the value for the <see cref="IsLicenseValid" /> property.
