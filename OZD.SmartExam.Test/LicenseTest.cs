@@ -33,7 +33,7 @@ namespace OZD.SmartExam.Test
 
             try
             {
-                LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);
+                var license = LicenseManager.GetLicense();
                 Assert.Fail();
             }
             catch(LicenseException ex)
@@ -49,7 +49,7 @@ namespace OZD.SmartExam.Test
 
             try
             {
-                LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);
+                var license = LicenseManager.GetLicense();
                 Assert.Fail();
             }
             catch (LicenseException ex)
@@ -65,7 +65,7 @@ namespace OZD.SmartExam.Test
 
             try
             {
-                LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo);
+                var license = LicenseManager.GetLicense();
                 Assert.Fail();
             }
             catch (LicenseException ex)
@@ -84,7 +84,10 @@ namespace OZD.SmartExam.Test
 
             var serialKey = LicenseManager.GetDiskSerialKey();
             LicenseManager.WriteLicenseFile(serialKey, DateTime.Today.AddDays(5));
-            Assert.IsTrue(LicenseManager.IsLicenseValid(out LicenseInfo licenseInfo));
+            
+            var license = LicenseManager.GetLicense();
+            Assert.AreEqual(serialKey, license.MachineId);
+            Assert.AreEqual(DateTime.Today.AddDays(5), license.Expiry);
         }
 
         [TestMethod]
@@ -92,6 +95,5 @@ namespace OZD.SmartExam.Test
         {
             Assert.IsNotNull(LicenseManager.GetDiskSerialKey());
         }
-        }
-
+    }
 }

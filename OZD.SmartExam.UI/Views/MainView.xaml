@@ -75,7 +75,7 @@
         </dxb:BarContainerControl>
 
         <!--Options-->
-        <GroupBox Header="Options" Style="{StaticResource MainGroupBoxStyle}" IsEnabled="{DXBinding '!IsLicenseValid or IsTestInProgress? false : true'}" Width="Auto" Grid.Row="1">
+        <GroupBox Header="Options" Style="{StaticResource MainGroupBoxStyle}" IsEnabled="{DXBinding 'IsTestInProgress ? false : true'}" Width="Auto" Grid.Row="1">
             <Grid Style="{StaticResource GridInGroupStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

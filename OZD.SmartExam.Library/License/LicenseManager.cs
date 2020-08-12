@@ -10,6 +10,11 @@
     public static class LicenseManager
     {
         /// <summary>
+        /// Full license key.
+        /// </summary>
+        private static readonly string fullLicenseKey = "0000-0000-0000-0000";
+
+        /// <summary>
         /// Generates the serial key.
         /// </summary>
         public static string GetDiskSerialKey()
@@ -29,9 +34,9 @@
         /// Determines whether [is license valid].
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if [is license valid]; otherwise, <c>false</c>.
+        /// The license information.
         /// </returns>
-        public static bool IsLicenseValid(out LicenseInfo returnLicenseInfo)
+        public static LicenseInfo GetLicense()
         {
             var licenseFile = Path.GetFullPath(ConfigurationManager.AppSettings["LicenseFile"].ToString());
             if (!File.Exists(licenseFile))
@@ -48,7 +53,6 @@
                     throw new LicenseException("Invalid license format", LicenseErrorCode.InvalidFormat);
                 }
 
-                returnLicenseInfo = licenseInfo;
                 var validDays = (licenseInfo.Expiry - DateTime.UtcNow.Date).TotalDays;
                 if (validDays < 0)
                 {
@@ -63,22 +67,13 @@
 
                 if (!string.IsNullOrWhiteSpace(licenseInfo.MachineId))
                 {
-                    if (!string.Equals(serialKey, licenseInfo.MachineId, StringComparison.Ordinal))
+                    if (!string.Equals(serialKey, licenseInfo.MachineId, StringComparison.Ordinal) && !string.Equals(licenseInfo.MachineId, fullLicenseKey, StringComparison.Ordinal))
                     {
                         throw new LicenseException("License is not valid for this machine", LicenseErrorCode.InvalidMachine);
                     }
                 }
-                else
-                {
-                    licenseInfo.MachineId = serialKey;
 
-                    stream.Seek(0, SeekOrigin.Begin);
-                    formatter.Serialize(stream, licenseInfo);
-                    stream.Flush();
-                    stream.Close();
-                }
-
-                return true;
+                return licenseInfo;
             }
         }
 

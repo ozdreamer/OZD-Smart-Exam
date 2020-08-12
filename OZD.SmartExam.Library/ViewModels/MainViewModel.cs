@@ -41,7 +41,7 @@
         /// <summary>
         /// The window manager
         /// </summary>
-        private IWindowManager windowManger;
+        private readonly IWindowManager windowManger;
 
         #endregion
 
@@ -78,52 +78,41 @@
         }
 
         /// <summary>
-        /// Gets or sets the SelectedSkin.
+        /// Gets this window title.
         /// </summary>
-        /// <value>The SelectedSkin.</value>
+        /// <value>The window title.</value>
         public string WindowTitle
         {
             get
             {
                 var product = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product;
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
-                return $"{product} v{version.Major}.{version.Minor}";
+                var title = $"{product} v{version.Major}.{version.Minor}";
+                return this.licenseInfo != null ? $"{title} ({(this.licenseInfo.Expiry - DateTime.Today).TotalDays} Days)" : title;
             }
         }
 
         /// <summary>
-        /// Stores the value for the <see cref="IsLicenseValid" /> property.
+        /// License information.
         /// </summary>
-        private bool isLicenseValid = false;
+        private LicenseInfo licenseInfo;
 
         /// <summary>
-        /// Gets or sets the IsLicenseValid.
+        /// The license information.
         /// </summary>
-        /// <value>Flat to check whether the license is valid or not.</value>
-        public bool IsLicenseValid
+        public LicenseInfo LicenseInfo
         {
-            get
-            {
-                return this.isLicenseValid;
-            }
-
+            get => this.licenseInfo;
             set
             {
-                if (this.isLicenseValid != value)
+                if (this.licenseInfo != value)
                 {
-                    this.isLicenseValid = value;
-                    this.NotifyOfPropertyChange(() => this.IsLicenseValid);
+                    this.licenseInfo = value;
+                    this.NotifyOfPropertyChange(() => this.LicenseInfo);
+                    this.NotifyOfPropertyChange(() => this.WindowTitle);
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the window service.
-        /// </summary>
-        /// <value>
-        /// The window service.
-        /// </value>
-        //private IWindowService WindowService => this.GetService<IWindowService>();
 
         #region Primary Data
 
@@ -1210,10 +1199,9 @@
         /// </summary>
         public void Load()
         {
-            LicenseInfo licenseInfo = null;
             try
             {
-                this.IsLicenseValid = LicenseManager.IsLicenseValid(out licenseInfo);
+                this.LicenseInfo = LicenseManager.GetLicense();
             }
             catch (LicenseException ex)
             {
@@ -1230,7 +1218,7 @@
                 }
                 else
                 {
-                    ShowMessageBox("License Error", ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowMessageBox(ex.Message, "License Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 Application.Current.Shutdown();
