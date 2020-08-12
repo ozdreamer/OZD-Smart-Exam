@@ -401,11 +401,10 @@
                     if (value != null)
                     {
                         var exam = this.AvailableExams.FirstOrDefault(x => x.Id == value.ExamId);
-                        this.QuestionImage = Path.Combine(this.imageDirectory, $"{this.SelectedSubject.Id}", $"{exam.Grade}", $"{exam.Year}", $"{value.Number}.png");
+                        var exampType = this.ExamTypes.First(x => x.Id == exam.TypeId);
+                        this.QuestionImage = Path.Combine(this.imageDirectory, $"{exam.Grade}", $"{exampType.Code}", $"{this.SelectedSubject.Id}", $"{exam.Year}", $"{value.Number}.png");
                         this.AnswerGiven = this.answers.ContainsKey(value.Id) ? this.answers[value.Id] : string.Empty;
                     }
-
-                    // this.DisplayAdditionalQuestion();
                 }
 
                 this.NextQuestionCommand?.RaiseCanExecuteChanged();

@@ -139,7 +139,8 @@ namespace OZD.SmartExam.Library.Data
                         var examType = new ExamType
                         {
                             Id = Convert.ToInt32(reader[nameof(ExamType.Id)]),
-                            Title = Convert.ToString(reader[nameof(ExamType.Title)])
+                            Title = Convert.ToString(reader[nameof(ExamType.Title)]),
+                            Code = Convert.ToString(reader[nameof(ExamType.Code)])
                         };
 
                         examTypes.Add(examType);
